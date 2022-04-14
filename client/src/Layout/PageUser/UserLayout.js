@@ -6,45 +6,35 @@ import Header from "../../Components/User/Header";
 import SideBarCategory from "../../Components/User/SideBarCategory";
 import Footer from "../../Components/User/Footer";
 import { Outlet } from "react-router-dom";
-// import { Web3Provider } from "../../Providers";
-// import { UserProvider } from "../../Providers";
+import { Web3Provider } from "../../Providers";
+import { UserProvider } from "../../Providers";
 const MasterLayout = ({cartItems}) =>{
     
     useEffect(() => {
-        $('.set-bg').each(function () {
-            var bg = $(this).data('setbg');
-            $(this).css('background-image', 'url(' + bg + ')');
-        });
+        const setBg = document.querySelectorAll('.set-bg');
+        setBg.forEach((item) => {
+            let bg = item.getAttribute('data-setbg');
+            item.style.backgroundImage = `url('${bg}')`;
+        })
     });
     return (
-        <div>
-            <div id="preloder">
-                <div className="loader" />
-            </div>
-            <div className="humberger__menu__overlay" />
-            <TopBar></TopBar>
-            
-            <Header cartItems={cartItems}></Header>
-            <SideBarCategory></SideBarCategory>
-            <Outlet></Outlet>
-            <Footer></Footer>
-        </div>
-        // <Web3Provider>
-        //     <UserProvider>
-        //     <div>
-        //         <div id="preloder">
-        //             <div className="loader" />
-        //         </div>
-        //         <div className="humberger__menu__overlay" />
-        //         <TopBar></TopBar>
+
+        <Web3Provider>
+            <UserProvider>
+            <div>
+                <div id="preloder">
+                    <div className="loader" />
+                </div>
+                <div className="humberger__menu__overlay" />
+                <TopBar></TopBar>
                 
-        //         <Header cartItems={cartItems}></Header>
-        //         <SideBarCategory></SideBarCategory>
-        //         <Outlet></Outlet>
-        //         <Footer></Footer>
-        //     </div>
-        //     </UserProvider>
-        // </Web3Provider>
+                <Header cartItems={cartItems}></Header>
+                <SideBarCategory></SideBarCategory>
+                <Outlet></Outlet>
+                <Footer></Footer>
+            </div>
+            </UserProvider>
+        </Web3Provider>
     )
 }
 

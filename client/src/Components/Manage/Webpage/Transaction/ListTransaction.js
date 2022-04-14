@@ -1,49 +1,21 @@
 import React,{useEffect, useState} from 'react'
-import Web3 from 'web3';
-import detectEthereumProvider from '@metamask/detect-provider';
-import {loadContract} from '../../../../utilis/load-contracts';
+import {useWeb3} from "../../../../Providers";
 function ListTransaction() {
     const [transactions, setTransactions] = useState();
-    const [web3Api, setWeb3Api] = useState({
-        provider: null,
-        web3: null,
-        contract: null,
-    });
+    const {web3, contract, provider} = useWeb3();
     const [account, setAccount] = useState(null);
     useEffect(() => {
-        const loadProvider = async () => {
-          const provider = await detectEthereumProvider();
-          const contract = await loadContract("ManagerOgani", provider)
-          if (provider) {
-            setAccountLister(provider)
-            setWeb3Api({
-              web3: new Web3(provider),
-              provider,
-              contract
+        const LoadTransaction = async () =>{
+            await contract.getAllTransaction({from:account})
+            .then((data)=>{
+                setTransactions(data);
             })
-          } else {
-            console.error("please, Install Metamask")
-          }
+            .catch((err)=>{
+                console.log(err);
+            })
         }
-        loadProvider()
+        LoadTransaction();
     }, []);
-    useEffect(() => {
-        web3Api.contract && loadpage();
-    }, [web3Api.contract]);
-    const setAccountLister = (provider) => {
-        provider.on("accountChanged", accounts => setAccount(accounts[0]))
-    }
-    const loadpage = async () =>{
-        const {contract} = web3Api;
-        await contract.getAllTransaction({from:account})
-        .then((data)=>{
-            setTransactions(data);
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
-    }
-    const {web3 } = web3Api;
     return (
         <div className="mx-4">
             <div className="card o-hidden border-0 shadow-lg my-5">

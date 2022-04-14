@@ -16,7 +16,7 @@ const Home = ({handleAddCart}) => {
             <TopSlideCategory></TopSlideCategory>
             <FeaturedProduct handleAddCart={handleAddCart}></FeaturedProduct>
             <Banner></Banner>
-            {/* <LastestSlideProduct></LastestSlideProduct> */}
+            <LastestSlideProduct></LastestSlideProduct>
             <FromBog></FromBog>
         </div>
     )

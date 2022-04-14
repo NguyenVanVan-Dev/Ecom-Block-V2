@@ -3,12 +3,14 @@ import {Link,useNavigate} from "react-router-dom";
 import $ from 'jquery'
 import axios  from "axios";
 import Notiflix from 'notiflix';
+import contractApi from '../../../../Api/contractApi';
 const ListContract = () => {
     const [contracts,setContract] = useState([]);
     useEffect(()=>{
-        axios.get('/contract/show').then((res)=>{
-            if(res.data.success === true){
-                setContract(res.data.contract);
+        contractApi.getAll()
+        .then((res)=>{
+            if(res.success === true){
+                setContract(res.contract);
             }
         })
         .catch((error)=>{
@@ -17,8 +19,9 @@ const ListContract = () => {
     },[])
     const handleRemoveContract = (id)=>{
         const data = {id};
-        axios.post('/contract/delete',data).then((res)=>{
-            if(res.data.success === true){
+        contractApi.delete(data)
+        .then((res)=>{
+            if(res.success === true){
                 Notiflix.Report.failure("Delete Contract Successfully","Contract has been remove from database" , 'Cancel');
                 $('#'+id).remove()
             }

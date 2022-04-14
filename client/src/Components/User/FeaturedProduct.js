@@ -1,9 +1,9 @@
 import React,{useEffect,useState} from 'react'
-import axios from 'axios';
 import Notiflix from 'notiflix';
 import mixitup from 'mixitup';
 import { Link } from "react-router-dom";
 import categoryApi from "../../Api/categoryApi";
+import productApi from "../../Api/productApi";
 const FeaturedProduct = ({handleAddCart}) => {
     const [products,setProduct] = useState([]);
     const [categories,setCategory] = useState([]);
@@ -31,24 +31,27 @@ const FeaturedProduct = ({handleAddCart}) => {
         })
     }, []);
     useEffect(() => {
-        axios.get('/product/show',{ params : {type : 'featured' } })
-            .then((res)=>{
-                if(res.data.success === true){
-                    setProduct(res.data.products);
-                    let featured__filter = document.querySelector('.featured__filter');
-                    if(featured__filter){
-                        var mixer = mixitup(featured__filter);
-                    }
-                    const setBg = document.querySelectorAll('.set-bg');
-                    setBg.forEach((item) => {
-                        let bg = item.getAttribute('data-setbg');
-                        item.style.backgroundImage = `url('${bg}')`;
-                    })
+        const params = {
+            type: 'featured'
+        }
+        productApi.getAll(params)
+        .then((res)=>{
+            if(res.success === true){
+                setProduct(res.products);
+                let featured__filter = document.querySelector('.featured__filter');
+                if(featured__filter){
+                    var mixer = mixitup(featured__filter);
                 }
-            })
-            .catch((error)=>{
-                Notiflix.Report.failure("Product not Found","please come back later" , 'Cancel');
-            })
+                const setBg = document.querySelectorAll('.set-bg');
+                setBg.forEach((item) => {
+                    let bg = item.getAttribute('data-setbg');
+                    item.style.backgroundImage = `url('${bg}')`;
+                })
+            }
+        })
+        .catch((error)=>{
+            Notiflix.Report.failure("Product not Found","please come back later" , 'Cancel');
+        })
     }, []);
 
     return (

@@ -3,7 +3,10 @@ import {Link,useParams} from "react-router-dom";
 import axios  from "axios";
 import Notiflix from 'notiflix';
 import $ from 'jquery';
-import productApi from '../../../../Api/productApi'
+import productApi from '../../../../Api/productApi';
+import categoryApi from "../../../../Api/categoryApi";
+
+
 function DetailProduct() {
     const { id } = useParams();
     const [productInput, setProductInput] = useState({
@@ -23,15 +26,18 @@ function DetailProduct() {
     const [categories,setCategory] = useState([]);
     const [imageReview,setImageReview] = useState({src: '',file:'',name:''});
     useEffect(()=>{
-        axios.get('/category/show',{ params : { whoCall: 'admin'} })
-            .then((res)=>{
-                if(res.data.success === true){
-                    setCategory(res.data.category);
-                }
-            })
-            .catch((error)=>{
-                Notiflix.Report.failure("Category not Found","please come back later" , 'Cancel');
-            })
+        const params ={
+            whoCall: 'admin'
+        };
+        categoryApi.getAll(params)
+        .then((res)=>{
+            if(res.success === true){
+                setCategory(res.category);
+            }
+        })
+        .catch((error)=>{
+            Notiflix.Report.failure("Category not Found","please come back later" , 'Cancel');
+        })
     },[]);
     useEffect(() => {
         const fetchProductDetail = async () => {
@@ -55,7 +61,7 @@ function DetailProduct() {
                             type_display:res.product.type_display,
                             error_list:[],
                         }); 
-                        setImageReview({ src: '/uploads/'+res.product.image });
+                        setImageReview({ src: 'http://localhost:2105/uploads/'+res.product.image });
                     }
                 }).catch((error)=>{
                     Notiflix.Report.failure(error.response.data.message,`No product found with id "${id}" ` , 'Cancel');

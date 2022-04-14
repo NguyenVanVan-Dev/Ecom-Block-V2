@@ -10,7 +10,7 @@ const port = process.env.POST || 2105;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(express.static('public')); 
 // morgan debug log server 
 app.use(morgan('combined'))
 

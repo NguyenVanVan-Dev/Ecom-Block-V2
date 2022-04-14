@@ -113,7 +113,7 @@ function ListProduct() {
                                                     </td>
                                                     <td  style={{ maxWidth: 250 }} title={product.desc} >{product.desc}</td>
                                                     <td>
-                                                        <img className="img-fluid" src={'/uploads/'+product.image} alt="Product Image" width={'200px'} />
+                                                        <img className="img-fluid" src={'http://localhost:2105/uploads/'+product.image} alt="Product Image" width={'200px'} />
                                                     </td>
                                                     <td>{product.price}</td>
                                                     <td>{product.qty}</td>

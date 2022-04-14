@@ -1,33 +1,39 @@
-import React,{ useEffect,useLayoutEffect,useState} from "react";
+import React,{ useEffect,useState} from "react";
 import OwlCarousel from 'react-owl-carousel';
-import axios from "axios";
 import Notiflix from 'notiflix';
 import { Link } from "react-router-dom";
+import productApi from "../../Api/productApi";
 
 const LastestSlideProduct = () => {
     const [latestProducts,setLatestProducts] = useState();
     const [topRateProducts,setTopRateProducts] = useState();
     useEffect(() => {
-        axios.get('/product/show',{ params : {type : 'latest' } })
-            .then((res)=>{
-                if(res.data.success === true){
-                    setLatestProducts(res.data.products);
-                }
-            })
-            .catch((error)=>{ 
-                Notiflix.Report.failure("Product not Found","please come back later" , 'Cancel');
-            })
+        const params = {
+            type: 'latest'
+        }
+        productApi.getAll(params)
+        .then((res)=>{
+            if(res.success === true){
+                setLatestProducts(res.products);
+            }
+        })
+        .catch((error)=>{ 
+            Notiflix.Notify.failure("Product not found please come back later!");
+        })
     }, []);
     useEffect(() => {
-        axios.get('/product/show',{ params : {type : 'top-rated' } })
-            .then((res)=>{
-                if(res.data.success === true){
-                    setTopRateProducts(res.data.products);
-                }
-            })
-            .catch((error)=>{ 
-                Notiflix.Report.failure("Product not Found","please come back later" , 'Cancel');
-            })
+        const params = {
+            type: 'top-rated'
+        }
+        productApi.getAll(params)
+        .then((res)=>{
+            if(res.success === true){
+                setTopRateProducts(res.products);
+            }
+        })
+        .catch((error)=>{ 
+            Notiflix.Notify.failure("Product not found please come back later!");
+        })
     }, []);
     return (
         <section className="latest-product spad">

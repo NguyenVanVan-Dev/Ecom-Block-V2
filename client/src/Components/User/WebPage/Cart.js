@@ -1,13 +1,13 @@
 import React,{useEffect,useState} from 'react';
 import { Link } from 'react-router-dom';
-import $ from 'jquery';
 const Cart = ({cartItems,setCartItems}) => {
     const [priceETH, setPriceETH] = useState("57788940");
     useEffect(() => {
-        $('.set-bg').each(function () {
-            var bg = $(this).data('setbg');
-            $(this).css('background-image', 'url(' + bg + ')');
-        });
+        const setBg = document.querySelectorAll('.set-bg');
+        setBg.forEach((item) => {
+            let bg = item.getAttribute('data-setbg');
+            item.style.backgroundImage = `url('${bg}')`;
+        })
         let hero__item = document.querySelector(".hero__item");
         hero__item.style.display = 'none';
         let hero__categories = document.querySelector(".hero__categories ul");
@@ -35,7 +35,7 @@ const Cart = ({cartItems,setCartItems}) => {
     const subTotal = cartItems.reduce((total,item)=>total+ item.price * item.quantity,0)
     return (
         <div>
-            <section className="breadcrumb-section set-bg" data-setbg="UI/img/breadcrumb.jpg">
+            <section className="breadcrumb-section set-bg" data-setbg="Resource/User/image/breadcrumb.jpg">
                 <div className="container">
                 <div className="row">
                     <div className="col-lg-12 text-center">

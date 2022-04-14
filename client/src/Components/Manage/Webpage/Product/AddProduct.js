@@ -4,6 +4,8 @@ import axios  from "axios";
 import Notiflix from 'notiflix';
 import $ from 'jquery'
 import productApi from '../../../../Api/productApi';
+import categoryApi from "../../../../Api/categoryApi";
+import contractApi from "../../../../Api/contractApi";
 import { useWeb3 } from "../../../../Providers";
 function AddProduct() {
     const {web3,contract,provider} = useWeb3();
@@ -39,13 +41,13 @@ function AddProduct() {
     }, []);
     // Show Select List Category 
     useEffect(()=>{
-        axios.get('/category/show',{ 
-            params : { 
-              whoCall: 'admin',
-            } 
-            }).then((res)=>{
-            if(res.data.success === true){
-                setCategory(res.data.category);
+        const params = {
+            whoCall: 'admin',
+        }
+        categoryApi.getAll(params)
+        .then((res)=>{
+            if(res.success === true){
+                setCategory(res.category);
             }
         })
         .catch((error)=>{
@@ -54,10 +56,10 @@ function AddProduct() {
     },[])
     // Show Select List Contrat 
     useEffect(()=>{
-        axios.get('/contract/show',{ 
-            }).then((res)=>{
-            if(res.data.success === true){
-                setContract(res.data.contract);
+        contractApi.getAll()
+        .then((res)=>{
+            if(res.success === true){
+                setContract(res.contract);
             }
         })
         .catch((error)=>{

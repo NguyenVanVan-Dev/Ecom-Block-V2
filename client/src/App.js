@@ -6,6 +6,23 @@ import AdminLayout from "./Layout/PageAdmin/AdminLayout";
 import UserLayout from "./Layout/PageUser/UserLayout";
 import Home from "./Components/User/WebPage/Home";
 import Dashboard from "./Components/Manage/Webpage/Dashboard";
+import Register from "./Components/Manage/Auth/Register";
+import AddCategory from "./Components/Manage/Webpage/Category/AddCategory";
+import ListCategory from "./Components/Manage/Webpage/Category/ListCategory";
+import DetailCategory from "./Components/Manage/Webpage/Category/DetailCategory";
+import AddProduct from "./Components/Manage/Webpage/Product/AddProduct";
+import ListProduct from "./Components/Manage/Webpage/Product/ListProduct";
+import DetailProduct from "./Components/Manage/Webpage/Product/DetailProduct";
+import ForgotPassword from "./Components/Manage/Auth/ForgotPassword";
+import ResetPassword from "./Components/Manage/Auth/ResetPassword";
+import Cart from "./Components/User/WebPage/Cart";
+import ListTransaction from "./Components/Manage/Webpage/Transaction/ListTransaction";
+import AddContract from "./Components/Manage/Webpage/Contract/AddContract";
+import ListContract from "./Components/Manage/Webpage/Contract/ListContract";
+import CheckOut from "./Components/User/WebPage/CheckOut";
+import DetailProductUser from "./Components/User/WebPage/DetailProduct";
+import LoginUser from "./Components/User/WebPage/Login";
+import Shop from "./Components/User/WebPage/Shop"
 import Notiflix from "notiflix";
 function App() {
     const [cartItems, setCartItems] = useState(()=>{
@@ -38,20 +55,19 @@ function App() {
         <div className="App">
         <Routes>
             <Route path="/" element={<UserLayout cartItems={cartItems}/>} >
-                {/* <Route path="cart" element={<Cart setCartItems={setCartItems} cartItems={cartItems}/>} />
+                <Route path="cart" element={<Cart setCartItems={setCartItems} cartItems={cartItems}/>} />
                 <Route path="checkout" element={<CheckOut setCartItems={setCartItems} cartItems={cartItems}/>} />
                 <Route path="product/:id" element={<DetailProductUser handleAddCart={handleAddCart}/>} />
                 <Route path="login" element={<LoginUser/>} />
-                <Route path="shop" element={<Shop/>} /> */}
+                <Route path="shop" element={<Shop/>} />
                 <Route path="/" element={<Home handleAddCart={handleAddCart}  />} />
             </Route>
             <Route path="/admin/login" element = {<Login/>} />
-            {/* <Route path="/admin/register" element = {<Register/>} />
+            <Route path="/admin/register" element = {<Register/>} />
             <Route path="/admin/forgot-password" element = {<ForgotPassword/>} />
-            <Route path="/admin/reset-password/:token" element = {<ResetPassword/>} /> */}
+            <Route path="/admin/reset-password/:token" element = {<ResetPassword/>} />
             <Route path="/admin" element = {<AdminLayout/>} >
                 <Route path="dashboard" element={<Dashboard />} />
-                {/* <Route path="profile" element={<Profile/>} />
                 <Route path="add-category" element={<AddCategory/>} />
                 <Route path="list-category" element={<ListCategory/>} />
                 <Route path="category/:id" element={<DetailCategory/>} />
@@ -60,7 +76,7 @@ function App() {
                 <Route path="product/:id" element={<DetailProduct/>} />  
                 <Route path="list-transaction" element={<ListTransaction/>} />  
                 <Route path="add-contract" element={<AddContract/>} />
-                <Route path="list-contract" element={<ListContract/>} /> */}
+                <Route path="list-contract" element={<ListContract/>} />
             </Route>
         </Routes>
         </div>
