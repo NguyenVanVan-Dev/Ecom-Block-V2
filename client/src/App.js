@@ -3,7 +3,9 @@ import React,{useState} from "react";
 import { Routes, Route} from "react-router-dom";
 import Login from "./Components/Manage/Auth/Login";
 import AdminLayout from "./Layout/PageAdmin/AdminLayout";
-
+import UserLayout from "./Layout/PageUser/UserLayout";
+import Home from "./Components/User/WebPage/Home";
+import Dashboard from "./Components/Manage/Webpage/Dashboard";
 import Notiflix from "notiflix";
 function App() {
     const [cartItems, setCartItems] = useState(()=>{
@@ -34,25 +36,22 @@ function App() {
    
     return (
         <div className="App">
-            <Routes>
-                <Route path="/admin/login" element = {<Login/>} />
-            </Routes>
-        {/* <Routes>
-            <Route path="/" element={<MasterLayoutUI cartItems={cartItems}/>} >
-                <Route path="cart" element={<Cart setCartItems={setCartItems} cartItems={cartItems}/>} />
+        <Routes>
+            <Route path="/" element={<UserLayout cartItems={cartItems}/>} >
+                {/* <Route path="cart" element={<Cart setCartItems={setCartItems} cartItems={cartItems}/>} />
                 <Route path="checkout" element={<CheckOut setCartItems={setCartItems} cartItems={cartItems}/>} />
                 <Route path="product/:id" element={<DetailProductUser handleAddCart={handleAddCart}/>} />
                 <Route path="login" element={<LoginUser/>} />
-                <Route path="shop" element={<Shop/>} />
+                <Route path="shop" element={<Shop/>} /> */}
                 <Route path="/" element={<Home handleAddCart={handleAddCart}  />} />
             </Route>
             <Route path="/admin/login" element = {<Login/>} />
-            <Route path="/admin/register" element = {<Register/>} />
+            {/* <Route path="/admin/register" element = {<Register/>} />
             <Route path="/admin/forgot-password" element = {<ForgotPassword/>} />
-            <Route path="/admin/reset-password/:token" element = {<ResetPassword/>} />
+            <Route path="/admin/reset-password/:token" element = {<ResetPassword/>} /> */}
             <Route path="/admin" element = {<AdminLayout/>} >
                 <Route path="dashboard" element={<Dashboard />} />
-                <Route path="profile" element={<Profile/>} />
+                {/* <Route path="profile" element={<Profile/>} />
                 <Route path="add-category" element={<AddCategory/>} />
                 <Route path="list-category" element={<ListCategory/>} />
                 <Route path="category/:id" element={<DetailCategory/>} />
@@ -61,9 +60,9 @@ function App() {
                 <Route path="product/:id" element={<DetailProduct/>} />  
                 <Route path="list-transaction" element={<ListTransaction/>} />  
                 <Route path="add-contract" element={<AddContract/>} />
-                <Route path="list-contract" element={<ListContract/>} />
+                <Route path="list-contract" element={<ListContract/>} /> */}
             </Route>
-        </Routes> */}
+        </Routes>
         </div>
     );
 }

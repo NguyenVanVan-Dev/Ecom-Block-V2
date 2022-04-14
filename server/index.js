@@ -15,7 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('combined'))
 
 //Connect Database 
-db.connect("ecom-block-v2");
+// db.connect("ecom-block-v2");
+db.connect("ecommerce-blockchain");
 
 // //routes 
 route(app);

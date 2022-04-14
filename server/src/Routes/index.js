@@ -1,5 +1,5 @@
 
-// const categoryRouter = require('./category');
+const categoryRouter = require('./category');
 // const productRouter = require('./product');
 const authRouter = require('./auth');
 const siteRouter = require('./site');
@@ -10,7 +10,7 @@ function route(app){
 
     app.use('/api', authRouter);
     // app.use('/product', productRouter);
-    // app.use('/category', categoryRouter);
+    app.use('/category', categoryRouter);
     // app.use('/contract', contractRouter);
 
     app.use('/', siteRouter);
