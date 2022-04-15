@@ -1,18 +1,19 @@
 import React,{useEffect, useState} from 'react'
-import {Link,useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import $ from 'jquery'
-import axios  from "axios";
+
 import Notiflix from 'notiflix';
+import categoryApi from '../../../../Api/categoryApi';
 const ListCategory = () => {
     const [categories,setCategory] = useState([]);
     useEffect(()=>{
-        axios.get('/category/show',{ 
-            params : { 
-              whoCall: 'admin',
-            } 
-            }).then((res)=>{
-            if(res.data.success === true){
-                setCategory(res.data.category);
+        const params = {
+            whoCall: 'admin'
+        }
+        categoryApi.getAll(params)
+        .then((res)=>{
+            if(res.success === true){
+                setCategory(res.category);
             }
         })
         .catch((error)=>{
@@ -21,8 +22,9 @@ const ListCategory = () => {
     },[])
     const handleRemoveCategory = (id)=>{
         const data = {id};
-        axios.post('/category/delete',data).then((res)=>{
-            if(res.data.success === true){
+        categoryApi.delete(data)
+        .then((res)=>{
+            if(res.success === true){
                 Notiflix.Report.failure("Delete Category Successfully","Category has been remove from database" , 'Cancel');
                 $('#'+id).remove()
             }

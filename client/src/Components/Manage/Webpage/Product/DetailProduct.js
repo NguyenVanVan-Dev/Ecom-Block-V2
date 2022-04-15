@@ -120,6 +120,7 @@ function DetailProduct() {
                 setProductInput((prev)=>{
                     return {...prev,error_list: error.response.data.listError}
                 });
+                Notiflix.Loading.remove(1000);
             }
         })
         return false;

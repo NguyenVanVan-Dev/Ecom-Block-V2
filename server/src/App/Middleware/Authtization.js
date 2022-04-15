@@ -2,9 +2,13 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 authMiddleware = (req,res,next) => {
+    let token = null;
     const authorizationHeader = req.headers['authorization'];
     // Beaer [token] 
-    const token = authorizationHeader.split(' ')[1];
+    if(authorizationHeader)
+    {
+        token = authorizationHeader.split(' ')[1];
+    }
     if(!token){
         res.status(401).json({success:false,message:'UnAuthorization Error'})
     }

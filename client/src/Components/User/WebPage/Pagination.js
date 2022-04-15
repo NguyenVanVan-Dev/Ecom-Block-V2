@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 function Pagination(props) {
     const { pagination, onPageChange } = props;

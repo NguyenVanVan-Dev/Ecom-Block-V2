@@ -1,4 +1,5 @@
 import React,{useState, useEffect} from "react";
+import {Link} from "react-router-dom";
 import $ from "jquery";
 import Notiflix from 'notiflix';
 import categoryApi from "../../Api/categoryApi";
@@ -34,7 +35,7 @@ const SideBarCategory = () =>{
                     <ul>
                         {categories.map((category,index)=>{
                             return (
-                                <li key={index}><a href="#">{category.name}</a></li>
+                                <li key={index}><Link to="">{category.name}</Link></li>
                             )
                         })}
                     </ul>
@@ -67,7 +68,7 @@ const SideBarCategory = () =>{
                         <span>FRUIT FRESH</span>
                         <h2>Vegetable <br />100% Organic</h2>
                         <p>Free Pickup and Delivery Available</p>
-                        <a href="#" className="primary-btn">SHOP NOW</a>
+                        <Link to="" className="primary-btn">SHOP NOW</Link>
                         </div>
                     </div>
                 </div>

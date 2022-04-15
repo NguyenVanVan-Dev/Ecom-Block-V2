@@ -6,6 +6,14 @@ const categoryApi = {
     const url = `/category/show`;
     return axiosClient.get(url,{ params });
   },
+  store: (data) => {
+    const url = `/category/store`;
+    return axiosClient.post(url,data);
+  },
+  update: (data) => {
+    const url = `/category/update`;
+    return axiosClient.put(url,data);
+  },
   detail: (params) => {
     const url = `/category/detail`;
     return axiosClient.get(url,{ params });

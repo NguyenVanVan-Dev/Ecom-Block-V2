@@ -1,7 +1,8 @@
 import React ,{useState} from "react";
 import {Link} from "react-router-dom";
-import axios  from "axios";
+
 import Notiflix from 'notiflix';
+import categoryApi from "../../../../Api/categoryApi";
 const AddCategory = ()=>{
     // let navigate = useNavigate();
     const [categoryInput, setCategoryInput] = useState({
@@ -25,8 +26,8 @@ const AddCategory = ()=>{
             display:categoryInput.display,
           
         };
-        axios.post('/category/store',data).then(res =>{
-            if(res.data.success === true)
+        categoryApi.store(data).then(res =>{
+            if(res.success === true)
             {
                 setCategoryInput({
                     name:'',
@@ -36,7 +37,7 @@ const AddCategory = ()=>{
                     display:1,
                     error_list:[],
                 });
-                Notiflix.Report.success(res.data.message,"Catalog has been added to the database" , 'Cancel');
+                Notiflix.Report.success(res.message,"Catalog has been added to the database" , 'Cancel');
             }
         }).catch((error)=>{
             console.log(error.response)

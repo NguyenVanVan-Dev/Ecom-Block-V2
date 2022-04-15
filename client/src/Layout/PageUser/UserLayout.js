@@ -1,6 +1,4 @@
 import React,{useEffect} from "react";
-
-import $ from 'jquery';
 import TopBar from "../../Components/User/Topbar"
 import Header from "../../Components/User/Header";
 import SideBarCategory from "../../Components/User/SideBarCategory";

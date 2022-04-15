@@ -1,7 +1,7 @@
 import React ,{useLayoutEffect, useState} from "react";
 import {Link,useParams} from "react-router-dom";
-import axios  from "axios";
 import Notiflix from 'notiflix';
+import categoryApi from "../../../../Api/categoryApi";
 function DetailCategory() {
     const { id } = useParams();
     const [categoryInput, setCategoryInput] = useState({
@@ -14,20 +14,18 @@ function DetailCategory() {
         error_list:[],
     })
     useLayoutEffect(()=>{
-        axios.get('/category/detail',{ 
-            params : { 
-              id,
-            } 
-            }).then(res =>{
-            if(res.data.success === true)
+        const params = {id};
+        categoryApi.detail(params)
+        .then(res =>{
+            if(res.success === true)
             {
                 setCategoryInput({
                     ...categoryInput,
-                    name:res.data.category.name,
-                    desc:res.data.category.desc,
-                    slug:res.data.category.slug,
-                    keyword:res.data.category.keyword,
-                    display:res.data.category.display,
+                    name:res.category.name,
+                    desc:res.category.desc,
+                    slug:res.category.slug,
+                    keyword:res.category.keyword,
+                    display:res.category.display,
                     error_list:[],
                 });
                
@@ -50,10 +48,11 @@ function DetailCategory() {
             keyword:categoryInput.keyword,
             display:categoryInput.display, 
         };
-        axios.put('/category/update',data).then(res =>{
-            if(res.data.success === true)
+        categoryApi.update(data)
+        .then(res =>{
+            if(res.success === true)
             {
-                Notiflix.Report.success(res.data.message,"Category has been updated to the database" , 'Cancel');
+                Notiflix.Report.success(res.message,"Category has been updated to the database" , 'Cancel');
             }
         }).catch((error)=>{
             console.log(error.response)

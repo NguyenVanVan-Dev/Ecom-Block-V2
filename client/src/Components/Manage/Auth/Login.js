@@ -55,7 +55,7 @@ const Login = () =>{
         const params = {id}
         authorizationApi.resetLogin(params)
         .then((data)=> {
-            if(data.success == true){
+            if(data.success === true){
                 localStorage.setItem('auth_name',data.info.name);
                 localStorage.setItem('auth_token',data.accessToken);
                 localStorage.setItem('auth_token_refesh',data.refeshToken);

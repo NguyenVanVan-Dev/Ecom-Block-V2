@@ -5,11 +5,8 @@ const categoryModle = require('../Models/Category')
 class CategoryController {
     //[POST] /category/store
     async store(req, res){
-        const {name, keyword, desc,display,slug} = req.body;
-        console.log(name);
-        const category = await categoryModle.findOne({ name })
         let listError = {};
-        
+        const category = await categoryModle.findOne({ name: req.body.name })
         try {
             if(category){
                 listError ={
@@ -17,32 +14,25 @@ class CategoryController {
                 }
                 return res.status(400).json({success:false, message:"Add Category Failure!",listError})
             }
-            const categorySave  = new categoryModle({ 
-                name,
-                keyword,
-                desc,
-                display,
-                slug
-            });
+            const categorySave  = new categoryModle(req.body);
             await  categorySave.save()
                     .then((result)=>{
                         res.status(200).json({success:true,message:"Add Category Successfully "});
                     })
                     .catch((error)=>{
-                        console.log(error.errors)
                         listError = {
                             name:error.errors.name ? error.errors.name.message : '',
                             keyword:error.errors.keyword ? error.errors.keyword.message : '',
                             desc:error.errors.desc ? error.errors.desc.message  : '',
                             slug:error.errors.slug ? error.errors.slug.message  : ''
                         };
-                        res.status(403).json({success:false,message:"Add CategoryFailure!",listError});
+                        res.status(400).json({success:false,message:"Add CategoryFailure!",listError});
                     });
         } catch (error) {
-            res.status(500).json({success:false,message:"Internal Server Error"})
+            res.status(500).json({success:false,message:"Internal Server Error"});
         }
     }
-     //[GET] /category/show
+    //[GET] /category/show
     async show(req,res){
         // console.log(this.detail(req,res));
         let whoCall = req.query.whoCall;
@@ -68,6 +58,7 @@ class CategoryController {
             res.status(500).json({success:false,error});
         }
     }
+    //[GET] /category/detail
     async detail(req,res){
         let id = req.query.id
         console.log(req.query.id)
@@ -84,20 +75,16 @@ class CategoryController {
             res.status(500).json({success:false,error});
         }
     }
-
+    //[PUT] /category/update/:id
     async update(req,res){
-        const {name, keyword, desc,display,slug,id} = req.body;
         let listError = {};
-        
         try {
             const opts = { runValidators: true };
-            await  categoryModle.updateOne({ _id: id },{ $set:{name, keyword, desc,display,slug}},opts)
+            await  categoryModle.updateOne({ _id: req.body.id },{ $set: req.body},opts)
                     .then((result)=>{
-                        console.log(result)
                         res.status(200).json({success:true,message:"Update Category Successfully "});
                     })
                     .catch((error)=>{
-                        console.log(error.errors)
                         listError = {
                             name:error.errors.name ? error.errors.name.message : '',
                             keyword:error.errors.keyword ? error.errors.keyword.message : '',
@@ -111,7 +98,7 @@ class CategoryController {
         }
     }
     async delete(req,res){
-      const  {id} = req.body;
+      const  {id} = req.query;
       if(!id){
         res.status(403).json({success:false,message:"Delete Category Failure , Infomation not found"});
       }
