@@ -24,5 +24,7 @@
   "devDependencies": {
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15"
-  }
+  },
+  "homepage": "."
+
 }

@@ -10,6 +10,7 @@ const Home = ({handleAddCart}) => {
         hero__item.style.display = 'block';
         let hero__categories = document.querySelector(".hero__categories ul");
         hero__categories.style.display = 'block';
+        console.log(process.env.REACT_APP_API_URL)
     }, []);
     return (
         <div>
