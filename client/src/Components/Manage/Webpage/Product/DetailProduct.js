@@ -1,6 +1,5 @@
 import React ,{useLayoutEffect, useState,useEffect} from "react";
 import {Link,useParams} from "react-router-dom";
-import axios  from "axios";
 import Notiflix from 'notiflix';
 import $ from 'jquery';
 import productApi from '../../../../Api/productApi';
@@ -61,7 +60,7 @@ function DetailProduct() {
                             type_display:res.product.type_display,
                             error_list:[],
                         }); 
-                        setImageReview({ src: 'http://localhost:2105/uploads/'+res.product.image });
+                        setImageReview({ src: process.env.REACT_APP_API_URL+'uploads/'+res.product.image });
                     }
                 }).catch((error)=>{
                     Notiflix.Report.failure(error.response.data.message,`No product found with id "${id}" ` , 'Cancel');

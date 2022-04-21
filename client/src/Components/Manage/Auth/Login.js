@@ -112,7 +112,8 @@ const Login = () =>{
                 }, 10800000);
             }
         }).catch((error)=>{
-            Notiflix.Report.failure('Login Failure',error.response.data.message, 'Cancel');
+            console.log(error.response);
+            Notiflix.Report.failure('Login Failure',"Can't Login", 'Cancel');
         });
     };
     return (   

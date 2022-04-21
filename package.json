@@ -1,0 +1,26 @@
+{
+  "name": "ecom-block-v2",
+  "version": "1.0.0",
+  "description": "Đồ án cơ sở 5 Ứng dụng SmartContract trong thành toán , xuất nhập hàng hóa",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nguyenvanvan-yone/Ecom-Block-V2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nguyenvanvan-yone/Ecom-Block-V2/issues"
+  },
+  "homepage": "https://github.com/Nguyenvanvan-yone/Ecom-Block-V2#readme",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^2.0.6",
+    "dotenv": "^16.0.0"
+  }
+}

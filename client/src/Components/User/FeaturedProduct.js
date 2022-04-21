@@ -79,7 +79,7 @@ const FeaturedProduct = ({handleAddCart}) => {
                         return (
                             <div key={product._id} className={`col-lg-3 col-md-4 col-sm-6 mix  ${product.category_id.slug}`} >                               
                                     <div className="featured__item">
-                                        <div className="featured__item__pic set-bg" data-setbg={`uploads/${product.image}`}>
+                                        <div className="featured__item__pic set-bg" data-setbg={`https://ecom-block.herokuapp.com/uploads/${product.image}`}>
                                             <ul className="featured__item__pic__hover">
                                                 <li><a href="#"><i className="fa fa-heart" /></a></li>
                                                 <li><a href="#"><i className="fa fa-retweet" /></a></li>

@@ -1,6 +1,5 @@
 import React ,{useState,useEffect} from "react";
 import {Link} from "react-router-dom";
-import axios  from "axios";
 import Notiflix from 'notiflix';
 import $ from 'jquery'
 import productApi from '../../../../Api/productApi';
@@ -100,19 +99,19 @@ function AddProduct() {
     const Transfers = async (id) =>{
         const amount = web3.utils.toWei(priceTotalETH.toString(), "ether");
         let   addressSupplier = productInput.wallet;
-        await contract.transferToSupplier(id,addressSupplier.toString(),{
-                from:account,
-                value:amount
-            })
-            .then((_transfer)=>{
-                Notiflix.Loading.remove(500);
-                setProductInput({name:'',desc:'',slug:'',keyword:'',price:'',qty:'',image:'',category_id:0,display:1,type_display:1,wallet:'',error_list:[],});
-            })
-            .catch((err)=>{
-                console.log(err);
-                Notiflix.Report.failure("Meta Mark Notification",err.message, 'Cancel');
-                deleteProduct(id);
-            })
+        await contract.methods.transferToSupplier(id,addressSupplier.toString()).send({
+            from:account,
+            value:amount
+        })
+        .then((_transfer)=>{
+            Notiflix.Loading.remove(500);
+            setProductInput({name:'',desc:'',slug:'',keyword:'',price:'',qty:'',image:'',category_id:0,display:1,type_display:1,wallet:'',error_list:[],});
+        })
+        .catch((err)=>{
+            console.log(err);
+            Notiflix.Report.failure("Meta Mark Notification",err.message, 'Cancel');
+            deleteProduct(id);
+        })
         return false; // turnoff reload function for "multer" lib
     }
     const handleInput = (e)=>{
@@ -149,14 +148,14 @@ function AddProduct() {
         });
         if(!account){
             provider.request({ method:'eth_requestAccounts'})
-                            .then((result)=>{
-                                setAccount(result[0]);
-                                storeProduct();
-                            })
-                            .catch((err)=>{
-                                console.log(err.response.data.message)
-                                Notiflix.Report.failure("Meta Mark Notification",err.response.data.message, 'Cancel');
-                            })
+            .then((result)=>{
+                setAccount(result[0]);
+                storeProduct();
+            })
+            .catch((err)=>{
+                console.log(err.response.data.message)
+                Notiflix.Report.failure("Meta Mark Notification",err.response.data.message, 'Cancel');
+            })
         }else{
             storeProduct();
         }

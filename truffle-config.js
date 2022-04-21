@@ -1,3 +1,11 @@
+require('dotenv').config();
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+
+const private_key = [
+  process.env.PRIVATE_KEY_0,
+  process.env.PRIVATE_KEY_1,
+]
+
 
 module.exports = {
   contracts_build_directory: "./client/public/contracts",
@@ -6,6 +14,26 @@ module.exports = {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 7545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
+    },
+    rinkeby: {
+      provider: () => new HDWalletProvider({
+          privateKeys: private_key ,
+          providerOrUrl: 'https://rinkeby.infura.io/v3/ce71593d5f1e4f4c939d498531303136',
+          numberOfAddress: 2
+      }),
+      network_id: 4,       // Ropsten's id
+      gas: 5500000,        // Ropsten has a lower block limit than mainnet
+      confirmations: 2,    // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+    },
+    ropsten: {
+    provider: () => new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/YOUR-PROJECT-ID`),
+    network_id: 3,       // Ropsten's id
+    gas: 5500000,        // Ropsten has a lower block limit than mainnet
+    confirmations: 2,    // # of confs to wait between deployments. (default: 0)
+    timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+    skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
   },
 

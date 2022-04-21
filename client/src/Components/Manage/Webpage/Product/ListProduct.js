@@ -1,10 +1,8 @@
 import React,{useEffect, useState} from 'react'
 import {Link} from "react-router-dom";
 import $ from 'jquery'
-import axios  from "axios";
 import Notiflix from 'notiflix';
 import productApi from '../../../../Api/productApi';
-import categoryApi from '../../../../Api/categoryApi';
 function ListProduct() {
     const [products,setProducts] = useState([]);
     // const [categories,setCategorys] = useState({});
@@ -29,9 +27,6 @@ function ListProduct() {
             console.log('render')
         }
         fetchProductlist();
-        return () => {
-            console.log('clear');
-        }
     }, []);
     Notiflix.Loading.hourglass("Loading data...",{
         clickToClose: true,
@@ -113,7 +108,7 @@ function ListProduct() {
                                                     </td>
                                                     <td  style={{ maxWidth: 250 }} title={product.desc} >{product.desc}</td>
                                                     <td>
-                                                        <img className="img-fluid" src={'http://localhost:2105/uploads/'+product.image} alt="Product Image" width={'200px'} />
+                                                        <img className="img-fluid" src={process.env.REACT_APP_API_URL+`uploads/`+product.image} alt="Product Image" width={'200px'} />
                                                     </td>
                                                     <td>{product.price}</td>
                                                     <td>{product.qty}</td>

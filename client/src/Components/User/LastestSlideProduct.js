@@ -59,7 +59,7 @@ const LastestSlideProduct = () => {
                                                 let price = product.price;
                                                 return ( <Link key={product._id} to={`product/${product._id}`} className="latest-product__item">
                                                             <div className="latest-product__item__pic">
-                                                                <img src={`uploads/${product.image}`} alt="" />
+                                                                <img src={`https://ecom-block.herokuapp.com/uploads/${product.image}`} alt="" />
                                                             </div>
                                                             <div className="latest-product__item__text">
                                                                 <h6>{product.name}</h6>
@@ -75,7 +75,7 @@ const LastestSlideProduct = () => {
                                             let price = product.price;
                                             return ( <Link key={product._id} to={`product/${product._id}`} className="latest-product__item">
                                                         <div className="latest-product__item__pic">
-                                                            <img src={`uploads/${product.image}`} alt="" />
+                                                            <img src={`https://ecom-block.herokuapp.com/uploads/${product.image}`} alt="" />
                                                         </div>
                                                         <div className="latest-product__item__text">
                                                             <h6>{product.name}</h6>
@@ -108,7 +108,7 @@ const LastestSlideProduct = () => {
                                                 let price = product.price;
                                                 return ( <Link key={product._id} to={`product/${product._id}`} className="latest-product__item">
                                                             <div className="latest-product__item__pic">
-                                                                <img src={`uploads/${product.image}`} alt="" />
+                                                                <img src={`https://ecom-block.herokuapp.com/uploads/${product.image}`} alt="" />
                                                             </div>
                                                             <div className="latest-product__item__text">
                                                                 <h6>{product.name}</h6>
@@ -124,7 +124,7 @@ const LastestSlideProduct = () => {
                                                 let price = product.price;
                                                 return ( <a key={product._id} to={`product/${product._id}`} className="latest-product__item">
                                                             <div className="latest-product__item__pic">
-                                                                <img src={`uploads/${product.image}`} alt="" />
+                                                                <img src={`https://ecom-block.herokuapp.com/uploads/${product.image}`} alt="" />
                                                             </div>
                                                             <div className="latest-product__item__text">
                                                                 <h6>{product.name}</h6>

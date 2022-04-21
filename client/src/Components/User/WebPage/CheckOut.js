@@ -48,10 +48,11 @@ function CheckOut({cartItems,setCartItems}) {
     const handleInput = (e)=> {
         setCheckout({...checkout,[e.target.name]: e.target.value});
     }
+    console.log(contract);
     const cart = localStorage.getItem('cart');
     const userPaymentOrder = async (id)=>{
         const amount = web3.utils.toWei(priceTotalETH.toString(), "ether");
-        await contract.userPaymentOrder(id,{
+        await contract.methods.userPaymentOrder(id).send({
                 from:account,
                 value:amount
             })
