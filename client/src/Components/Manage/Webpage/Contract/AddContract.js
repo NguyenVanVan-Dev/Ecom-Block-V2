@@ -1,7 +1,7 @@
 import React ,{useState} from "react";
 import {Link} from "react-router-dom";
-import axios  from "axios";
 import Notiflix from 'notiflix';
+import contractApi from "../../../../Api/contractApi";
 const AddContract = ()=>{
     // let navigate = useNavigate();
     const [contractInput, setContractInput] = useState({
@@ -22,8 +22,9 @@ const AddContract = ()=>{
             wallet:contractInput.wallet,
             address:contractInput.address,
         };
-        axios.post('/contract/store',data).then(res =>{
-            if(res.data.success === true)
+        contractApi.store(data)
+        .then(res =>{
+            if(res.success === true)
             {
                 setContractInput({
                     name:'',
@@ -32,7 +33,7 @@ const AddContract = ()=>{
                     address:'',
                     error_list:[],
                 });
-                Notiflix.Report.success(res.data.message,"Contract has been added to the database" , 'Cancel');
+                Notiflix.Report.success(res.message,"Contract has been added to the database" , 'Cancel');
             }
         }).catch((error)=>{
             console.log(error.response)
