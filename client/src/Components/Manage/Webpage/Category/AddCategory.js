@@ -17,6 +17,10 @@ const AddCategory = ()=>{
         setCategoryInput({...categoryInput,[e.target.name]: e.target.value})
     }
     const handelSubmit = (e)=>{
+        Notiflix.Loading.hourglass("Loading data...",{
+            clickToClose: true,
+            svgSize: '120px',
+        });
         e.preventDefault();
         let data ={
             name:categoryInput.name,
@@ -37,15 +41,18 @@ const AddCategory = ()=>{
                     display:1,
                     error_list:[],
                 });
-                Notiflix.Report.success(res.message,"Catalog has been added to the database" , 'Cancel');
+                Notiflix.Loading.remove();
+                Notiflix.Notify.success("Catalog has been added to the database");
             }
         }).catch((error)=>{
+            Notiflix.Loading.remove();
             console.log(error.response)
             if(error.response.data.listError){
                 setCategoryInput((prev)=>{
                     return {...prev,error_list: error.response.data.listError}
                 });
             }
+            Notiflix.Notify.success("category cannot be saved!");
         })
     };
     return (

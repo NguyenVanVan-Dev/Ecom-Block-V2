@@ -48,7 +48,6 @@ function CheckOut({cartItems,setCartItems}) {
     const handleInput = (e)=> {
         setCheckout({...checkout,[e.target.name]: e.target.value});
     }
-    console.log(contract);
     const cart = localStorage.getItem('cart');
     const userPaymentOrder = async (id)=>{
         const amount = web3.utils.toWei(priceTotalETH.toString(), "ether");
@@ -72,7 +71,9 @@ function CheckOut({cartItems,setCartItems}) {
                     notes:'',
                     total:subTotal,
                     error_list:{}
-                })
+                });
+                Notiflix.Loading.remove();
+                Notiflix.Notify.success("Order has been paid!");
             })
             .catch((err)=>{
                 console.log(err);
@@ -92,7 +93,8 @@ function CheckOut({cartItems,setCartItems}) {
         provider.request({ method: 'eth_requestAccounts' })
         .then((account)=>{
            setAccount(account[0]);
-        //    setIsConnected(true);
+           Notiflix.Loading.remove();
+           Notiflix.Notify.warning("Please! Checkout again! ");
         })
         .catch((error) => {
           if (error.code === 4001) {
@@ -101,8 +103,13 @@ function CheckOut({cartItems,setCartItems}) {
             console.error(error);
           }
         });
+        
     }
     const handleSubmit = (e) => {
+        Notiflix.Loading.hourglass("Loading data...",{
+            clickToClose: true,
+            svgSize: '120px',
+        });
         e.preventDefault();
         const params = {
             firstName:checkout.firstName,
@@ -143,6 +150,7 @@ function CheckOut({cartItems,setCartItems}) {
                             total:subTotal,
                             error_list:{}
                         })
+                        Notiflix.Notify.success("Order has been saved!");
                     })
                     .catch((error) => {
                         if(error.response.data.listError){
@@ -151,6 +159,7 @@ function CheckOut({cartItems,setCartItems}) {
                             });
                         }
                     });
+                    Notiflix.Loading.remove();
                     break;
                 case 2:
                     if(account === null) {
@@ -158,6 +167,8 @@ function CheckOut({cartItems,setCartItems}) {
                     } else {
                         handleStoreOrder(params)
                         .then((res)=>{
+                            
+                            Notiflix.Notify.success("Order has been saved!");
                             userPaymentOrder(res);
                         })
                         .catch((error) => {

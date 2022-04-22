@@ -275,7 +275,7 @@ function Shop() {
                                                     return (  
                                                     <div key={product._id} className="col-lg-4">
                                                         <div className="product__discount__item">
-                                                            <div className="product__discount__item__pic set-bg" data-setbg={`uploads/${product.image}`}>
+                                                            <div className="product__discount__item__pic set-bg" data-setbg={process.env.REACT_APP_API_URL+`uploads/`+product.image}>
                                                             <div className="product__discount__percent">-{product.sale_of}%</div>
                                                             <ul className="product__item__pic__hover">
                                                                 <li><a href="#"><i className="fa fa-heart" /></a></li>
@@ -325,7 +325,7 @@ function Shop() {
                                         return (
                                             <div key={product._id} className="col-lg-4 col-md-6 col-sm-6">
                                                 <div className="product__item">
-                                                    <div className="product__item__pic set-bg" data-setbg={`uploads/${product.image}`}>
+                                                    <div className="product__item__pic set-bg" data-setbg={process.env.REACT_APP_API_URL+`uploads/`+product.image}>
                                                     <ul className="product__item__pic__hover">
                                                         <li><a href="#"><i className="fa fa-heart" /></a></li>
                                                         <li><a href="#"><i className="fa fa-retweet" /></a></li>

@@ -77,7 +77,7 @@ const Cart = ({cartItems,setCartItems}) => {
                                         cartItems.map((item)=>(
                                             <tr key={item._id}>
                                                 <td className="shoping__cart__item">
-                                                    <img src={`/uploads/${item.image}`} alt="" />
+                                                    <img src={process.env.REACT_APP_API_URL+`uploads/`+item.image} alt="" />
                                                     <h5>{item.name}</h5>
                                                 </td>
                                                 <td className="shoping__cart__price">

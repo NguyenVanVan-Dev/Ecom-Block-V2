@@ -146,7 +146,7 @@ input::-webkit-inner-spin-button {
 .bg-login-user{
     background-position: center;
     object-fit: cover;
-	background: url("../../uploads/bg-login-user2.jpg") no-repeat;
+	background: url("../../User/image/bg-login-user2.jpg") no-repeat;
 }
 .spad {
 	padding-top: 100px;

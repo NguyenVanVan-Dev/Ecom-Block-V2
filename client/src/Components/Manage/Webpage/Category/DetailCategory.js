@@ -4,6 +4,10 @@ import Notiflix from 'notiflix';
 import categoryApi from "../../../../Api/categoryApi";
 function DetailCategory() {
     const { id } = useParams();
+    Notiflix.Loading.hourglass("Loading data...",{
+        clickToClose: true,
+        svgSize: '120px',
+    });
     const [categoryInput, setCategoryInput] = useState({
         id:id,
         name:'',
@@ -28,9 +32,10 @@ function DetailCategory() {
                     display:res.category.display,
                     error_list:[],
                 });
-               
+                Notiflix.Loading.remove();
             }
         }).catch((error)=>{
+            Notiflix.Loading.remove();
             Notiflix.Report.failure(error.response.data.message,`No category found with id "${id}" ` , 'Cancel');
         })
     },[])

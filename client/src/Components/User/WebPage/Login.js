@@ -52,7 +52,7 @@ function Login() {
     
   return (
    <div>
-       <section className="breadcrumb-section set-bg" data-setbg="/UI/img/breadcrumb.jpg">
+       <section className="breadcrumb-section set-bg" data-setbg="Resource/User/image/breadcrumb.jpg">
                 <div className="container">
                 <div className="row">
                     <div className="col-lg-12 text-center">

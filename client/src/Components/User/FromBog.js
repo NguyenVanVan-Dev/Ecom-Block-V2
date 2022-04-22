@@ -15,7 +15,7 @@ const FromBog = () => {
                 <div className="col-lg-4 col-md-4 col-sm-6">
                 <div className="blog__item">
                     <div className="blog__item__pic">
-                    <img src="UI/img/blog/blog-1.jpg" alt="" />
+                    <img src="Resource/User/image/blog/blog-1.jpg" alt="" />
                     </div>
                     <div className="blog__item__text">
                     <ul>
@@ -30,7 +30,7 @@ const FromBog = () => {
                 <div className="col-lg-4 col-md-4 col-sm-6">
                 <div className="blog__item">
                     <div className="blog__item__pic">
-                    <img src="UI/img/blog/blog-2.jpg" alt="" />
+                    <img src="Resource/User/image/blog/blog-2.jpg" alt="" />
                     </div>
                     <div className="blog__item__text">
                     <ul>
@@ -45,7 +45,7 @@ const FromBog = () => {
                 <div className="col-lg-4 col-md-4 col-sm-6">
                 <div className="blog__item">
                     <div className="blog__item__pic">
-                    <img src="UI/img/blog/blog-3.jpg" alt="" />
+                    <img src="Resource/User/image/blog/blog-3.jpg" alt="" />
                     </div>
                     <div className="blog__item__text">
                     <ul>

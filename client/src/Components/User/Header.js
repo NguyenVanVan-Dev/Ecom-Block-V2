@@ -1,12 +1,12 @@
 import React ,{useEffect,useState} from "react";
 import logo from '../../Resource/image/logo.png';
 import { Link,NavLink} from "react-router-dom";
-// import { useUser } from "../../Providers";
+import { useUser } from "../../Providers";
 import NavbarTop from "./NavbarTop";
 const Header = ({cartItems}) =>{
     const subTotal = cartItems.reduce((total,item)=>total+ item.price * item.quantity,0);
     const [active, setActive] = useState(false);
-    // const { user } = useUser();
+    const { user } = useUser();
     useEffect(() => {
         return () => {
             setActive(false);
@@ -32,7 +32,6 @@ const Header = ({cartItems}) =>{
                         <a href="#"><i className="fa fa-twitter" /></a>
                         <a href="#"><i className="fa fa-linkedin" /></a>
                         <a href="#"><i className="fa fa-pinterest-p" /></a>
-                        <Link to="/admin/login"><i className="fas fa-dumpster"/></Link>
                     </div>
                     <div className="header__top__right__language">
                         <img src="img/language.png" alt="" />
@@ -45,8 +44,12 @@ const Header = ({cartItems}) =>{
                     </div>
                     <div className="header__top__right__auth">
                         {
-                            <Link to="/login"><i className="fa fa-user" /> Login</Link>
-                        //    user ?  ( <Link to="/"><i className="fa fa-user" /> { user.name} </Link>) : ( <Link to="/login"><i className="fa fa-user" /> Login</Link>)
+                           user ?  ( <Link to="/"><i className="fa fa-user" /> { user.name} </Link>) : ( <Link to="/login"><i className="fa fa-user" /> Login</Link>)
+                        }                       
+                    </div>
+                    <div className="header__top__right__auth ml-4">
+                        {
+                          <Link to="/admin/login"><i className="fas fa-dumpster" /> Dashboard </Link>
                         }                       
                     </div>
                     </div>

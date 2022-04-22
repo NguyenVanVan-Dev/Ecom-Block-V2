@@ -20,9 +20,6 @@ const MasterLayout = ({cartItems}) =>{
         <Web3Provider>
             <UserProvider>
             <div>
-                <div id="preloder">
-                    <div className="loader" />
-                </div>
                 <div className="humberger__menu__overlay" />
                 <TopBar></TopBar>
                 

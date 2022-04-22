@@ -1,10 +1,13 @@
 import React,{useEffect, useState} from 'react'
 import {Link} from "react-router-dom";
 import $ from 'jquery'
-
 import Notiflix from 'notiflix';
 import categoryApi from '../../../../Api/categoryApi';
 const ListCategory = () => {
+    Notiflix.Loading.hourglass("Loading data...",{
+        clickToClose: true,
+        svgSize: '120px',
+    });
     const [categories,setCategory] = useState([]);
     useEffect(()=>{
         const params = {
@@ -14,9 +17,11 @@ const ListCategory = () => {
         .then((res)=>{
             if(res.success === true){
                 setCategory(res.category);
+                Notiflix.Loading.remove(500);
             }
         })
         .catch((error)=>{
+            Notiflix.Loading.remove(500);
             Notiflix.Report.failure("Category not Found","please come back later" , 'Cancel');
         })
     },[])
@@ -25,7 +30,7 @@ const ListCategory = () => {
         categoryApi.delete(data)
         .then((res)=>{
             if(res.success === true){
-                Notiflix.Report.failure("Delete Category Successfully","Category has been remove from database" , 'Cancel');
+                Notiflix.Notify.failure("Delete Category Successfully");
                 $('#'+id).remove()
             }
         })

@@ -101,5 +101,7 @@ contract ManagerOgani is Ownable {
     function withdrawMoneyTo(address payable _to) public {
         _to.transfer(getBalance());
     }
-    
+    function refundsOrderUser(address payable _walletuser,uint _amount) public payable {
+        _walletuser.transfer(_amount);
+    }
 }
