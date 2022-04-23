@@ -104,11 +104,12 @@ function AddProduct() {
             value:amount
         })
         .then((_transfer)=>{
-            Notiflix.Loading.remove(500);
+            Notiflix.Loading.remove();
             setProductInput({name:'',desc:'',slug:'',keyword:'',price:'',qty:'',image:'',category_id:0,display:1,type_display:1,wallet:'',error_list:[],});
         })
         .catch((err)=>{
             console.log(err);
+            Notiflix.Loading.remove();
             Notiflix.Report.failure("Meta Mark Notification",err.message, 'Cancel');
             deleteProduct(id);
         })
@@ -144,6 +145,7 @@ function AddProduct() {
     const handelSubmit = (e)=>{
         e.preventDefault();
         Notiflix.Loading.hourglass("Processing data! Please wait...",{
+            clickToClose: true,
             svgSize: '120px',
         });
         if(!account){

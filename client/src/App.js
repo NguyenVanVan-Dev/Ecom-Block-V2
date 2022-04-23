@@ -23,6 +23,7 @@ import CheckOut from "./Components/User/WebPage/CheckOut";
 import DetailProductUser from "./Components/User/WebPage/DetailProduct";
 import LoginUser from "./Components/User/WebPage/Login";
 import Shop from "./Components/User/WebPage/Shop"
+import AddEmployee from "./Components/Manage/Webpage/Employee/AddEmployee";
 import Notiflix from "notiflix";
 function App() {
     const [cartItems, setCartItems] = useState(()=>{
@@ -77,6 +78,7 @@ function App() {
                 <Route path="list-transaction" element={<ListTransaction/>} />  
                 <Route path="add-contract" element={<AddContract/>} />
                 <Route path="list-contract" element={<ListContract/>} />
+                <Route path="add-employee" element={<AddEmployee/>} />
             </Route>
         </Routes>
         </div>

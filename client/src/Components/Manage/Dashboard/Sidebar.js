@@ -111,9 +111,17 @@ const Sidebar = () =>{
         </li>
         {/* Nav Item - Tables */}
         <li className="nav-item">
-            <a className="nav-link" href="tables.html">
-            <i className="fas fa-fw fa-table" />
-            <span>Tables</span></a>
+            <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Employee" aria-expanded="true" aria-controls="collapsePages">
+                <i className="fas fa-address-card"></i>
+                <span>Employee manager</span>
+            </a>
+            <div id="Employee" className="collapse" aria-labelledby="headingTransaction" data-parent="#accordionSidebar">
+                <div className="bg-white py-2 collapse-inner rounded">
+                    <h6 className="collapse-header">Employee Page:</h6>
+                    <Link className="collapse-item" to="add-employee">Add Employee</Link>
+                    <Link className="collapse-item" to="list-employee">List Employee</Link>
+                </div>
+            </div>
         </li>
         {/* Divider */}
         <hr className="sidebar-divider d-none d-md-block" />
