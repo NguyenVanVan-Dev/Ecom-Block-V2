@@ -9,7 +9,6 @@ export const loadContract = async (name, provider) => {
   _contract.setProvider(provider)
   _contract.setNetwork("5777"); // "fix Error: ManagerOgani has not been deployed to detected network (network/artifact mismatch)";
   const deployedContract = await _contract.deployed();
-
-  return deployedContract
+  return {deployedContract,Artifact}
 
 }

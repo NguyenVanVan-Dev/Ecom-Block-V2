@@ -5,7 +5,7 @@ import { loadContract } from "../../Utilities/load-contracts";
 import ABI from  "../ABI.json";
 const Web3Context = createContext();
 const  Web3Provider =  ({children}) => {
-   
+    
     const [web3Api, setWeb3Api] = useState({
         provider: null,
         web3: null,
@@ -14,13 +14,21 @@ const  Web3Provider =  ({children}) => {
     useEffect(() => {
         const loadProvider = async () => {
           const provider = await detectEthereumProvider();
+          const ManagerOgani = loadContract("ManagerOgani", provider);
           // const contract = await loadContract("ManagerOgani", provider)
+          const abiSMContract=  (await ManagerOgani).Artifact.abi //localhost ganache 
+          const addressSMContract = (await ManagerOgani).deployedContract.address;  //localhost ganache 
           const web3 = new Web3(provider);
           if (provider) {
+            // setWeb3Api({
+            //   web3: web3,
+            //   provider,
+            //   contract: new web3.eth.Contract(ABI, '0x9ED09DA23dB437ebc515E05CE40661c5A6b7E371') // production 
+            // })
             setWeb3Api({
               web3: web3,
               provider,
-              contract: new web3.eth.Contract(ABI, '0x9ED09DA23dB437ebc515E05CE40661c5A6b7E371')
+              contract: new web3.eth.Contract(abiSMContract, addressSMContract)
             })
           } else {
             console.error("please, Install Metamask")

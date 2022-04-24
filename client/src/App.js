@@ -24,6 +24,7 @@ import DetailProductUser from "./Components/User/WebPage/DetailProduct";
 import LoginUser from "./Components/User/WebPage/Login";
 import Shop from "./Components/User/WebPage/Shop"
 import AddEmployee from "./Components/Manage/Webpage/Employee/AddEmployee";
+import OrderPlaced from "./Components/User/WebPage/OrderPlaced";
 import Notiflix from "notiflix";
 function App() {
     const [cartItems, setCartItems] = useState(()=>{
@@ -61,6 +62,7 @@ function App() {
                 <Route path="product/:id" element={<DetailProductUser handleAddCart={handleAddCart}/>} />
                 <Route path="login" element={<LoginUser/>} />
                 <Route path="shop" element={<Shop/>} />
+                <Route path="order-placed" element={<OrderPlaced/>} />
                 <Route path="/" element={<Home handleAddCart={handleAddCart}  />} />
             </Route>
             <Route path="/admin/login" element = {<Login/>} />

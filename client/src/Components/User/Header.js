@@ -6,12 +6,16 @@ import NavbarTop from "./NavbarTop";
 const Header = ({cartItems}) =>{
     const subTotal = cartItems.reduce((total,item)=>total+ item.price * item.quantity,0);
     const [active, setActive] = useState(false);
-    const { user } = useUser();
+    const { user, setUser } = useUser();
     useEffect(() => {
         return () => {
             setActive(false);
         };
     }, []);
+    const Logout = () => {
+        localStorage.removeItem('user');
+        setUser(undefined);
+    }
     return (
         <header className="header">
             <div className="header__top">
@@ -44,7 +48,16 @@ const Header = ({cartItems}) =>{
                     </div>
                     <div className="header__top__right__auth">
                         {
-                           user ?  ( <Link to="/"><i className="fa fa-user" /> { user.name} </Link>) : ( <Link to="/login"><i className="fa fa-user" /> Login</Link>)
+                           user ?  (<>  
+                                        <div to="/"><i className="fa fa-user" /> { user.name} </div>
+                                        <span className="arrow_carrot-down" />
+                                        <ul>
+                                        <li><a href="#">Profile</a></li>
+                                        <li><a href="#">Orders placed </a></li>
+                                        <li onClick={Logout}><a href="#">Logout</a></li>
+                                        </ul>
+                                    </>
+                           ) : ( <Link to="/login"><i className="fa fa-user" /> Login</Link>)
                         }                       
                     </div>
                     <div className="header__top__right__auth ml-4">
