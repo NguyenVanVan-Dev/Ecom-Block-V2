@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import checkoutApi from '../../../Api/checkoutApi';
 const OrderPlaced = ({cartItems,setCartItems}) => {
     const [listOrder, setListOrder] = useState([]);
-    const [priceETH, setPriceETH] = useState("57788940");
     useEffect(() => {
         const setBg = document.querySelectorAll('.set-bg');
         setBg.forEach((item) => {
@@ -15,39 +14,19 @@ const OrderPlaced = ({cartItems,setCartItems}) => {
         let hero__categories = document.querySelector(".hero__categories ul");
         hero__categories.style.display = 'none';
     });
+    console.log()
     useEffect(() => {
-        let listOrder = []
-        checkoutApi.getListOrder()
+        const params = {
+            email: localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).email
+        }
+        checkoutApi.getListOrder(params)
         .then((data) => {
-            data.orders.forEach((item) => {
-                item.listItemOrder.forEach((orderItem) => { 
-                   listOrder.push(orderItem);
-                })
-            })
-            setListOrder(listOrder);
+            setListOrder(data.orders);
         })
     }, []);
-    console.log(listOrder)
-    const handleQty = (e,id)=>{
-        setCartItems(prev => {
-                const newCart = prev.map((item)=> item._id === id ? {...item,quantity:parseInt(e.target.value)} : item)
-                console.log(JSON.stringify(newCart));
-                localStorage.setItem('cart',JSON.stringify(newCart));
-                return newCart;
-        });
-    };
-    const handleClearCart = ()=> {
-        setCartItems([]);
-        localStorage.removeItem('cart');
-    };
-    const handleRemoveItemCart = (id)=>{
-        setCartItems(prev => {
-            const newCart = prev.filter((item)=> item._id !== id)
-            localStorage.setItem('cart',JSON.stringify(newCart));
-            return newCart;
-        });
+    const handleRemoveOrder = async (id) => {
+        console.log(id)
     }
-    // const subTotal = cartItems.reduce((total,item)=>total+ item.price * item.quantity,0)
     return (
         <div>
             <section className="breadcrumb-section set-bg" data-setbg="Resource/User/image/breadcrumb.jpg">
@@ -55,10 +34,10 @@ const OrderPlaced = ({cartItems,setCartItems}) => {
                 <div className="row">
                     <div className="col-lg-12 text-center">
                     <div className="breadcrumb__text">
-                        <h2>Shopping Cart</h2>
+                        <h2>Order Placed</h2>
                         <div className="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <span>Shopping Cart</span>
+                        <Link to={"/"}>Home</Link>
+                        <span>Order Placed</span>
                         </div>
                     </div>
                     </div>
@@ -73,9 +52,10 @@ const OrderPlaced = ({cartItems,setCartItems}) => {
                                 <table>
                                     <thead>
                                         <tr>
-                                        <th className="shoping__product">Products</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
+                                        <th>STT</th>
+                                        <th>Address</th>
+                                        <th>Receiver</th>
+                                        <th>Phone</th>
                                         <th>Total</th>
                                         <th />
                                         </tr>
@@ -89,28 +69,25 @@ const OrderPlaced = ({cartItems,setCartItems}) => {
 
                                     }
                                     {
-                                        listOrder.map((item)=>(
+                                        listOrder.map((item,index)=>(
                                             <tr key={item._id}>
-                                                <td className="shoping__cart__item">
-                                                    <img src={process.env.REACT_APP_API_URL+`uploads/`+item.productID.image} alt="" />
-                                                    <h5>{item.productID.name + item._id}</h5>
-                                                </td>
-                                                <td className="shoping__cart__price">
-                                                    {item.productID.price}
-                                                </td>
-                                                <td className="shoping__cart__quantity">
-                                                    <div className="quantity">
-                                                        <div className="pro-qty" >
-                                                            <input type="number" onChange={(e) => handleQty(e,item._id)}  min="1" max={item.qty} defaultValue={item.qty} />
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className="shoping__cart__total">
-                                                   {(item.productID.price * item.qty).toLocaleString('vi-VN', {style: 'currency',currency: 'VND'}) }
-                                                </td>
-                                                <td className="shoping__cart__item__close">
-                                                    <span className="icon_close" onClick={()=> handleRemoveItemCart(item._id)} />
-                                                </td>
+                                                    <td>{index + 1}</td>
+                                                    <td >
+                                                        {item.apartmentAddress +", "+ item.country}       
+                                                    </td>
+                                                    <td >
+                                                        {item.firstName +" "+ item.lastName}
+                                                    </td>
+                                                    <td >
+                                                    {item.sdt}
+                                                    </td>
+                                                    <td >
+                                                    {(item.totalVND).toLocaleString('vi-VN', {style: 'currency',currency: 'VND'}) + "/"+ item.totalETH +" ETH"}
+                                                    </td>
+                                                    <td className="shoping__cart__item__close pr-4">
+                                                        <span className='mr-4 delete' onClick={() => handleRemoveOrder(item._id)} ><i className="fas fa-trash-alt"></i></span>
+                                                        <Link to={`/order-detail/${item._id}`}>  <span className='info'><i className="fas fa-info-circle"></i></span></Link>
+                                                    </td>
                                             </tr>
                                         ))
                                     }
@@ -119,24 +96,6 @@ const OrderPlaced = ({cartItems,setCartItems}) => {
                                 </table>
                             </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-lg-12">
-                            <div className="shoping__cart__btns">
-                                <a href="#" className="primary-btn cart-btn">Status order: </a>
-                            </div>
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="shoping__continue">
-                                <div className="shoping__discount">
-                                <h5>Discount Codes</h5>
-                                <form action="#">
-                                    <button type="submit" className="site-btn">Cancel Order</button>
-                                </form>
-                                </div>
-                            </div>
-                        </div>
-                        
                     </div>
                 </div>
             </section>

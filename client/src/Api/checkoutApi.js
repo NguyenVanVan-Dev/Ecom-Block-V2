@@ -6,10 +6,14 @@ const checkoutApi = {
     const url = `/checkout/store`;
     return axiosClient.post(url,params);
   },
-  getListOrder: (data) => {
+  getListOrder: (params) => {
     const url = `/checkout/order-placed`;
-    return axiosClient.get(url,data);
-  }
+    return axiosClient.get(url,{ params });
+  },
+  getDetailOrder: (params) => {
+    const url = `/checkout/order-detail`;
+    return axiosClient.get(url,{ params });
+  },
 
 }
 

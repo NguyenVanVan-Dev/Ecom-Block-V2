@@ -53,7 +53,7 @@ const Header = ({cartItems}) =>{
                                         <span className="arrow_carrot-down" />
                                         <ul>
                                         <li><a href="#">Profile</a></li>
-                                        <li><a href="#">Orders placed </a></li>
+                                        <li><Link to="/order-placed">Orders placed </Link></li>
                                         <li onClick={Logout}><a href="#">Logout</a></li>
                                         </ul>
                                     </>
