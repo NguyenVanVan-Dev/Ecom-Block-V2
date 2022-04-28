@@ -1,8 +1,12 @@
 import React,{useEffect,useState} from 'react';
 import { Link } from 'react-router-dom';
 import checkoutApi from '../../../Api/checkoutApi';
-const OrderPlaced = ({cartItems,setCartItems}) => {
+import Notiflix from "notiflix";
+import { useWeb3 } from '../../../Providers';
+const OrderPlaced = () => {
+    const { web3 } = useWeb3();
     const [listOrder, setListOrder] = useState([]);
+    const [account, setAccount] = useState('');
     useEffect(() => {
         const setBg = document.querySelectorAll('.set-bg');
         setBg.forEach((item) => {
@@ -14,7 +18,15 @@ const OrderPlaced = ({cartItems,setCartItems}) => {
         let hero__categories = document.querySelector(".hero__categories ul");
         hero__categories.style.display = 'none';
     });
-    console.log()
+    useEffect(() => {
+        const getAccounts = async () => {
+            if(web3) {
+                const account = await web3.eth.getAccounts();
+                setAccount(account[0]);
+            }
+        }
+        web3 && getAccounts();
+    }, [listOrder]);
     useEffect(() => {
         const params = {
             email: localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).email
@@ -25,7 +37,21 @@ const OrderPlaced = ({cartItems,setCartItems}) => {
         })
     }, []);
     const handleRemoveOrder = async (id) => {
-        console.log(id)
+        const params = {
+            id,
+            wallet: account
+        }
+        checkoutApi.deleteOrder(params)
+        .then((data)=> {
+            if(data.success === true ){
+                const orderDOM = document.getElementById(`${id}`);
+                orderDOM.remove();
+                Notiflix.Report.success("Ogani Notification","Delete Order Succcessfully <br> The system will refund you in a moment.","Cancel");
+            }
+        })
+        .catch((err) => {
+            Notiflix.Report.failure("Ogani Notification","Delete Order Fail <br> The system encountered an error, please try again later.","Cancel");
+        })
     }
     return (
         <div>
@@ -70,7 +96,7 @@ const OrderPlaced = ({cartItems,setCartItems}) => {
                                     }
                                     {
                                         listOrder.map((item,index)=>(
-                                            <tr key={item._id}>
+                                            <tr key={item._id} id={item._id}>
                                                     <td>{index + 1}</td>
                                                     <td >
                                                         {item.apartmentAddress +", "+ item.country}       

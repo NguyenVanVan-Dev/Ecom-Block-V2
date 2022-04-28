@@ -3,16 +3,24 @@ pragma solidity >=0.4.22 <0.9.0;
 import "./Ownable.sol";
 
 contract ManagerOgani is Ownable {
-    uint256 public transactionCount;
-    uint256 public orderNumber;
-    mapping (uint => PaymentObject) public listPayments;
-    mapping (uint => UserPayment) public listUserOrder;
-    mapping (address => uint256) public IndexUsers;
-    mapping (uint256 => address) public AddressUsers;
-    mapping (address => bool) public includeUser;
+    uint256 private orderId;
+    mapping (address => UserPayment[]) public userOrders;
+    mapping (address => PaymentToSupplier[]) public paymentsToSupplier;
+    mapping (address => bool) private isCustomer;
+    mapping (address => bool) private isSupplier;
+    event refundsForUser(
+        address indexed _walletUser,
+        uint indexed _amount
+    );
+    event transferSupplierSuccess( 
+        string idProduct,
+        uint amount
+    );
+  
     receive() external payable {}
     fallback() external payable {}
-    struct PaymentObject {
+   
+    struct PaymentToSupplier {
         string idProduct;
         uint256 totalPayment;
         address supplier;
@@ -26,82 +34,53 @@ contract ManagerOgani is Ownable {
     function getBalance() public view returns(uint) {
         return address(this).balance;
     }
-    function userPaymentOrder(string memory _idOrder) public payable {
-       UserPayment memory newUserOrder = UserPayment({
+    function userPaymentOrder(string memory _idOrder) external payable {
+        UserPayment memory newUserOrder = UserPayment({
             idOrder: _idOrder,
             totalPayment: msg.value,
             userAddress: msg.sender
         });
-        if(!includeUser[msg.sender]){
-            uint256 index = orderNumber++;
-            includeUser[msg.sender] = true;
-            IndexUsers[msg.sender] = index;
-            AddressUsers[index]= msg.sender;
-            listUserOrder[index] = newUserOrder;
+        if(!isCustomer[msg.sender]){
+            isCustomer[msg.sender] = true;
+            userOrders[msg.sender].push(newUserOrder);
         }else{
-            uint256 IndexUser;
-            for (uint i = 0; i < orderNumber; i++) {
-               address findIndexuser = AddressUsers[i];
-               if(findIndexuser == msg.sender){
-                    IndexUser= i;
-               }
-            }
-            listUserOrder[IndexUser]= newUserOrder ;
+            userOrders[msg.sender].push(newUserOrder);
         }
-       
     }
-    // function getPaymentOrderUser() public view returns (UserPayment[] memory){
-    //     UserPayment[]  memory listOrder  = new UserPayment[](orderNumber);
-    //     for (uint i = 0; i < orderNumber; i++) {
-    //        uint currentUser  = listUser[msg.sender];
-    //        if(currentUser == i)
-    //        { 
-    //         UserPayment storage currentObject = listUserOrder[i];
-    //         listOrder[i] = currentObject;
-    //        }
-    //     }
-    //     return listOrder;
-    // }
-    function getAllPaymentOrder() public view returns (UserPayment[] memory){
-        UserPayment[]  memory listOrder  = new UserPayment[](orderNumber);
-        for (uint i = 0; i < orderNumber; i++) {
-            UserPayment storage currentObject = listUserOrder[i];
-            listOrder[i]= currentObject;
+    function getAllOrderUser(address _addressUser) public view returns (UserPayment[] memory){
+        require(isCustomer[_addressUser]," User has never placed an order");
+        UserPayment[]  memory orders  = new UserPayment[](userOrders[_addressUser].length);
+        for (uint i = 0; i < userOrders[_addressUser].length; i++) {
+            UserPayment memory order = userOrders[_addressUser][i];
+            orders[i]= order;
         }
-        return listOrder;
+        return orders;
     }
-   
-    
-    function transferToSupplier(string memory _idProduct, address _supplier) public payable includeManagementList(msg.sender) {
-        listPayments[transactionCount] = PaymentObject(_idProduct,msg.value,_supplier,msg.sender);
-        transactionCount++;
+    function transferToSupplier(string memory _idProduct, address _supplier) external payable onlyManagers {
+        paymentsToSupplier[_supplier].push(PaymentToSupplier(_idProduct,msg.value,_supplier,msg.sender));
+        isSupplier[_supplier] = true;
         payable(_supplier).transfer(msg.value);
+        emit transferSupplierSuccess(_idProduct, msg.value);
     }
-    function  getTransaction(uint256 index) public view returns (PaymentObject memory){
-        PaymentObject[]    memory listTransaction = new PaymentObject[](transactionCount);
-        for (uint i = 0; i < transactionCount; i++) {
-            PaymentObject storage currentObject = listPayments[i];
-            listTransaction[i] = currentObject;
+    function getPaymentsToSupplier(address _addressSupplier) external view returns (PaymentToSupplier[] memory) {
+        require(isSupplier[_addressSupplier], "This wallet address is not a supplier");
+        uint lenghtPayment = paymentsToSupplier[_addressSupplier].length;
+        PaymentToSupplier[] memory payments = new PaymentToSupplier[](lenghtPayment);
+        for( uint i = 0; i < lenghtPayment; i++) {
+            PaymentToSupplier memory payment  = paymentsToSupplier[_addressSupplier][i];
+            payments[i] = payment;
         }
-        return listTransaction[index];
+        return payments;
     }
-    function getAllTransaction () external view returns (PaymentObject[] memory){
-        PaymentObject[]  memory listTransaction = new PaymentObject[](transactionCount);
-        for (uint i = 0; i < transactionCount; i++) {
-            PaymentObject storage currentObject = listPayments[i];
-            listTransaction[i] = currentObject;
-        }
-        return listTransaction;
+
+    function withdrawAll(address payable _to) external onlyOwner {
+      _to.transfer(getBalance());
     }
-    
-    
-    function withdraw(address _to) external payable{
-        payable(_to).transfer(msg.value);
+    function withdrawAmount(address payable _to, uint _amount) external onlyOwner {
+       _to.transfer(_amount);
     }
-    function withdrawMoneyTo(address payable _to) public {
-        _to.transfer(getBalance());
-    }
-    function refundsOrderUser(address payable _walletuser,uint _amount) public payable {
+    function refundsOrderUser(address payable _walletuser,uint _amount) external payable onlyManagers {
         _walletuser.transfer(_amount);
-    }
+        emit refundsForUser(_walletuser, _amount);
+    } 
 }

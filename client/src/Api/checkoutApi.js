@@ -14,7 +14,10 @@ const checkoutApi = {
     const url = `/checkout/order-detail`;
     return axiosClient.get(url,{ params });
   },
-
+  deleteOrder: (params) => {
+    const url = `/checkout/delete-order`;
+    return axiosClient.post(url,params);
+  },
 }
 
 export default checkoutApi;
