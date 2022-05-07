@@ -10,19 +10,23 @@ function CheckOut({cartItems,setCartItems}) {
     const [priceETH, setPriceETH] = useState(1);
     const [createAccount, setCreateAccount] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState({method: 1});
-    const [checkout, setCheckout] = useState({
-        firstName:'Vấn',
-        lastName:'Nguyễn Văn',
-        streetAddress:'144 Huỳnh Văn Nghệ',
-        apartmentAddress:'144 Huỳnh Văn Nghệ, Đà Nẵng',
-        city:'Đà Nẵng',
-        country:'Việt Nam',
-        sdt:'0362458584',
-        email:'van@gmail.com',
-        password:'',
-        notes:'Giao hàng nhanh nhé!',
-        total:subTotal,
-        error_list:{},
+    const [checkout, setCheckout] = useState((prev) => {
+        const examUser = {
+            name: "Nguyễn Văn Vấn",
+            streetAddress:'144 Huỳnh Văn Nghệ',
+            apartmentAddress:'144 Huỳnh Văn Nghệ, Đà Nẵng',
+            city:'Đà Nẵng',
+            country:'Việt Nam',
+            phone:'0362458584',
+            email:'van@gmail.com',
+            password:'',
+            notes:'Giao hàng nhanh nhé!',
+            total:subTotal,
+            error_list:{},
+        }
+        let user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : examUser;
+        user = {...user, error_list:{}};
+        return user;
     });
     const [account, setAccount] = useState(null);
     useEffect(() => {
@@ -112,13 +116,12 @@ function CheckOut({cartItems,setCartItems}) {
         });
         e.preventDefault();
         const params = {
-            firstName:checkout.firstName,
-            lastName:checkout.lastName,
+            name: checkout.name,
             streetAddress:checkout.streetAddress,
             apartmentAddress:checkout.apartmentAddress,
             city:checkout.city,
             country:checkout.country,
-            sdt:checkout.sdt,
+            phone:checkout.phone,
             email:checkout.email,
             notes:checkout.notes,
             cart: cart,
@@ -143,7 +146,7 @@ function CheckOut({cartItems,setCartItems}) {
                             apartmentAddress:'',
                             city:'',
                             country:'',
-                            sdt:'',
+                            phone:'',
                             email:'',
                             password:'',
                             notes:'',
@@ -249,18 +252,11 @@ function CheckOut({cartItems,setCartItems}) {
                         <div className="row">
                             <div className="col-lg-8 col-md-6">
                                 <div className="row">
-                                    <div className="col-lg-6">
+                                    <div className="col-lg-12">
                                     <div className="checkout__input">
                                         <p>Fist Name<span>*</span></p>
-                                        <input type="text" name='firstName' value={checkout.firstName} onChange={handleInput} />
-                                        <span className="text-danger small">{checkout.error_list.firstName}</span>
-                                    </div>
-                                    </div>
-                                    <div className="col-lg-6">
-                                    <div className="checkout__input">
-                                        <p>Last Name<span>*</span></p>
-                                        <input type="text" name='lastName' value={checkout.lastName} onChange={handleInput} />
-                                        <span className="text-danger small">{checkout.error_list.lastName}</span>
+                                        <input type="text" name='name' value={checkout.name} onChange={handleInput} />
+                                        <span className="text-danger small">{checkout.error_list.name}</span>
                                     </div>
                                     </div>
                                 </div>
@@ -289,8 +285,8 @@ function CheckOut({cartItems,setCartItems}) {
                                 <div className="col-lg-6">
                                 <div className="checkout__input">
                                     <p>Phone<span>*</span></p>
-                                    <input type="number" name='sdt' value={checkout.sdt} onChange={handleInput} />
-                                    <span className="text-danger small">{checkout.error_list.sdt}</span>
+                                    <input type="number" name='phone' value={checkout.phone} onChange={handleInput} />
+                                    <span className="text-danger small">{checkout.error_list.phone}</span>
                                 </div>
                                 </div>
                                 <div className="col-lg-6">

@@ -102,7 +102,7 @@ const OrderPlaced = () => {
                                                         {item.apartmentAddress +", "+ item.country}       
                                                     </td>
                                                     <td >
-                                                        {item.firstName +" "+ item.lastName}
+                                                        {item.name}
                                                     </td>
                                                     <td >
                                                     {item.sdt}
