@@ -5,7 +5,7 @@ import $ from 'jquery'
 import productApi from '../../../../Api/productApi';
 import categoryApi from "../../../../Api/categoryApi";
 import contractApi from "../../../../Api/contractApi";
-import { useWeb3 } from "../../../../Providers";
+import { useWeb3, useMetaMark} from "../../../../Providers";
 function AddProduct() {
     const {web3,contract,provider} = useWeb3();
     const [priceETH, setPriceETH] = useState("");
@@ -28,8 +28,7 @@ function AddProduct() {
         error_list:{},
     })
     const [imageReview,setImageReview] = useState({src: '',file:'',name:''});
-    const [account, setAccount] = useState(null);
-    const [isConnected, setIsConnected] = useState(false);
+    const { metaMark, setConnectMetaMark } =  useMetaMark();
     // Show Price ETH
     useEffect(() => {
         fetch("https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=ETH,VND")
@@ -77,19 +76,19 @@ function AddProduct() {
             if(accounts.length === 0)
             {
                 console.log("No Wallet");
-            }else if(accounts[0] !== account) {
-                setAccount(accounts[0]);
+            }else if(accounts[0] !== metaMark.wallet) {
+                setConnectMetaMark({wallet: accounts[0], isConnected: true});
             }
         }
-        if(isConnected) {
+        if(metaMark.isConnected) {
             provider.on("accountsChanged",handleAccountsChanged);
         }
         return () => {
-            if(isConnected) {
+            if(metaMark.isConnected) {
                 provider.removeListener('accountsChanged', handleAccountsChanged);
             }
         }
-    }, [isConnected]);
+    }, [metaMark.isConnected]);
     //review Image
     useEffect(() => {
         return () => {
@@ -100,7 +99,7 @@ function AddProduct() {
         const amount = web3.utils.toWei(priceTotalETH.toString(), "ether");
         let   addressSupplier = productInput.wallet;
         await contract.methods.transferToSupplier(id,addressSupplier.toString()).send({
-            from:account,
+            from:metaMark.wallet,
             value:amount
         })
         .then((_transfer)=>{
@@ -148,11 +147,11 @@ function AddProduct() {
             clickToClose: true,
             svgSize: '120px',
         });
-        if(!account){
+        if(metaMark.wallet === ''){
             provider.request({ method:'eth_requestAccounts'})
-            .then((result)=>{
-                setAccount(result[0]);
-                storeProduct();
+            .then((accounts)=>{
+                setConnectMetaMark({wallet: accounts[0], isConnected: true});
+                return storeProduct();
             })
             .catch((err)=>{
                 console.log(err.response.data.message)
@@ -171,7 +170,6 @@ function AddProduct() {
         formData.append('image', imageReview.file); 
         await productApi.store(formData)
         .then(res =>{
-            console.log(res);
             if(res.success === true )
             {
                 Transfers(res.id);
@@ -185,6 +183,7 @@ function AddProduct() {
                     return {...prev,error_list: error.response.data.listError}
                 });
             }
+            Notiflix.Loading.remove();
         }); 
     }
     const deleteProduct =async (id)=>{
@@ -201,8 +200,7 @@ function AddProduct() {
     const  handelConnectMetamask = async () => {
         provider.request({ method: 'eth_requestAccounts' })
         .then((account)=>{
-           setAccount(account[0]);
-           setIsConnected(true);
+            setConnectMetaMark({wallet: account[0], isConnected: true});
         })
         .catch((error) => {
           if (error.code === 4001) {
@@ -233,7 +231,7 @@ function AddProduct() {
                                     <div className="col-sm-9 d-flex agline-items-center">
                                         <strong>Account Address : </strong>
                                         <p className="account_number m-0 ml-4">
-                                        { account ? account : "Account Denined"}
+                                        { metaMark.wallet !== '' ? metaMark.wallet : "Account Denined"}
                                         </p>
                                     </div>
                                     <div className="col-sm-3">

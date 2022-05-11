@@ -18,6 +18,7 @@ const OrderPlaced = () => {
         let hero__categories = document.querySelector(".hero__categories ul");
         hero__categories.style.display = 'none';
     });
+    console.log(account)
     useEffect(() => {
         const getAccounts = async () => {
             if(web3) {
@@ -105,7 +106,7 @@ const OrderPlaced = () => {
                                                         {item.name}
                                                     </td>
                                                     <td >
-                                                    {item.sdt}
+                                                    {item.phone}
                                                     </td>
                                                     <td >
                                                     {(item.totalVND).toLocaleString('vi-VN', {style: 'currency',currency: 'VND'}) + "/"+ item.totalETH +" ETH"}

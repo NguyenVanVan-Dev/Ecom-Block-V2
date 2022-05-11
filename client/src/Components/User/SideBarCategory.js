@@ -1,8 +1,9 @@
-import React,{useState, useEffect} from "react";
+import React,{useState, useEffect, useReducer} from "react";
 import {Link} from "react-router-dom";
 import $ from "jquery";
 import Notiflix from 'notiflix';
 import categoryApi from "../../Api/categoryApi";
+import CategoryReducer,{ initCategory } from "../../Reducer/CategoryReducer";
 const SideBarCategory = () =>{
     useEffect(() => {
         $('.hero__categories__all').on('click', function(){
@@ -10,15 +11,26 @@ const SideBarCategory = () =>{
         });
         
     }, []);
-    const [categories,setCategory] = useState([]);
+    const [state, dispatch] = useReducer(CategoryReducer, initCategory);
+    const {categories, isLoading} = state;
+    if(isLoading) {
+        Notiflix.Loading.hourglass("Loading data...",{
+            clickToClose: true,
+            svgSize: '120px',
+        });
+    } else {
+        Notiflix.Loading.remove(500);
+    }
     useEffect(()=>{
+        dispatch({ type: "FETCH_INIT" });
         categoryApi.getAll()
         .then((res)=>{
             if(res.success === true){
-                setCategory(res.category);
+                dispatch({ type: "FETCH_SUCCESS", payload: res.category })
             }
         })
         .catch((error)=>{
+            dispatch({ type: "FETCH_FAILURE" });
             Notiflix.Report.failure("Category not Found","please come back later" , 'Cancel');
         })
     },[])

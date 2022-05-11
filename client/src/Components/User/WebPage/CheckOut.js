@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Notiflix from 'notiflix';
 import checkoutApi from '../../../Api/checkoutApi';
 import authorizationApi from '../../../Api/authApi';
-import {useWeb3} from '../../../Providers';
+import {useWeb3, useMetaMark} from '../../../Providers';
 function CheckOut({cartItems,setCartItems}) {
     const subTotal = cartItems.reduce((total,item)=>total+ item.price * item.quantity,0)
     const {web3, contract, provider} = useWeb3();
@@ -28,7 +28,8 @@ function CheckOut({cartItems,setCartItems}) {
         user = {...user, error_list:{}};
         return user;
     });
-    const [account, setAccount] = useState(null);
+    const { metaMark, setConnectMetaMark } =  useMetaMark();
+    console.log(metaMark);
     useEffect(() => {
         const getPriceEth = async ()=>{
             fetch("https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=ETH,VND")
@@ -56,7 +57,7 @@ function CheckOut({cartItems,setCartItems}) {
     const userPaymentOrder = async (id)=>{
         const amount = web3.utils.toWei(priceTotalETH.toString(), "ether");
         await contract.methods.userPaymentOrder(id).send({
-                from:account,
+                from:metaMark.wallet,
                 value:amount
             })
             .then((_transfer)=>{
@@ -89,14 +90,14 @@ function CheckOut({cartItems,setCartItems}) {
         if(accounts.length === 0)
         {
             console.log("No Wallet");
-        }else if(accounts[0] !== account) {
-            setAccount(accounts[0]);
+        }else if(accounts[0] !== metaMark.wallet) {
+            setConnectMetaMark({wallet: accounts[0], isConnected: true});
         }
     }
     const  handelConnectMetamask = async () => {
         provider.request({ method: 'eth_requestAccounts' })
-        .then((account)=>{
-           setAccount(account[0]);
+        .then((accounts)=>{
+            setConnectMetaMark({wallet: accounts[0], isConnected: true});
            Notiflix.Loading.remove();
            Notiflix.Notify.warning("Please! Checkout again! ");
         })
@@ -165,7 +166,7 @@ function CheckOut({cartItems,setCartItems}) {
                     Notiflix.Loading.remove();
                     break;
                 case 2:
-                    if(account === null) {
+                    if(metaMark.wallet === '') {
                         handelConnectMetamask();
                     } else {
                         handleStoreOrder(params)
