@@ -64,7 +64,7 @@ const Sidebar = () =>{
         <li className="nav-item">
             <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
             <i className="fas fa-fw fa-folder" />
-            <span>Pages</span>
+            <span>Pages Manager</span>
             </a>
             <div id="collapsePages" className="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div className="bg-white py-2 collapse-inner rounded">
@@ -76,9 +76,9 @@ const Sidebar = () =>{
                 <Link className="collapse-item" to="add-product">Add Products</Link>
                 <Link className="collapse-item" to="list-product">List Products</Link>
                 <div className="collapse-divider" />
-                <h6 className="collapse-header">Other Pages:</h6>
-                <a className="collapse-item" href="404.html">404 Page</a>
-                <a className="collapse-item" href="blank.html">Blank Page</a>
+                <h6 className="collapse-header">Order Pages:</h6>
+                <Link className="collapse-item" to="add-product">Add Products</Link>
+                <Link className="collapse-item" to="order-list">Order List </Link>
             </div>
             </div>
         </li>

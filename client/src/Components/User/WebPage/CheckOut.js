@@ -64,13 +64,12 @@ function CheckOut({cartItems,setCartItems}) {
                 localStorage.removeItem('cart');
                 setCartItems([]);
                 setCheckout({
-                    firstName:'',
-                    lastName:'',
+                    name:'',
                     streetAddress:'',
                     apartmentAddress:'',
                     city:'',
                     country:'',
-                    sdt:'',
+                    phone:'',
                     email:'',
                     password:'',
                     notes:'',
@@ -130,6 +129,7 @@ function CheckOut({cartItems,setCartItems}) {
             totalETH:priceTotalETH,
             method:paymentMethod.method,
         }
+        console.log(params)
         if(!cart){
             Notiflix.Report.failure(`Can't payment`,'Your shopping cart is empty','Canel');
         }else{
@@ -189,12 +189,12 @@ function CheckOut({cartItems,setCartItems}) {
             }
             if (createAccount) {
                 const paramsAcount = {
-                    name:checkout.firstName +' '+checkout.lastName,
+                    name:checkout.name,
                     streetAddress:checkout.streetAddress,
                     apartmentAddress:checkout.apartmentAddress,
                     city:checkout.city,
                     country:checkout.country,
-                    phone:checkout.sdt,
+                    phone:checkout.phone,
                     email:checkout.email,
                     password:checkout.password
                 }

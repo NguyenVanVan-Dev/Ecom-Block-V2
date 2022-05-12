@@ -27,6 +27,8 @@ import AddEmployee from "./Components/Manage/Webpage/Employee/AddEmployee";
 import OrderPlaced from "./Components/User/WebPage/OrderPlaced";
 import Notiflix from "notiflix";
 import OrderDetail from "./Components/User/WebPage/OrderDetail";
+import OrderDetailAdmin from "./Components/Manage/Webpage/Orders/OrderDetail";
+import OrderList from "./Components/Manage/Webpage/Orders/OrderList";
 function App() {
     const [cartItems, setCartItems] = useState(()=>{
         const storageCart = JSON.parse(localStorage.getItem('cart'));
@@ -83,6 +85,8 @@ function App() {
                 <Route path="add-contract" element={<AddContract/>} />
                 <Route path="list-contract" element={<ListContract/>} />
                 <Route path="add-employee" element={<AddEmployee/>} />
+                <Route path="order-list" element={<OrderList/>} />
+                <Route path="order-detail/:id" element={<OrderDetailAdmin/>} />
             </Route>
         </Routes>
         </div>
