@@ -77,7 +77,6 @@ const Sidebar = () =>{
                 <Link className="collapse-item" to="list-product">List Products</Link>
                 <div className="collapse-divider" />
                 <h6 className="collapse-header">Order Pages:</h6>
-                <Link className="collapse-item" to="add-product">Add Products</Link>
                 <Link className="collapse-item" to="order-list">Order List </Link>
             </div>
             </div>

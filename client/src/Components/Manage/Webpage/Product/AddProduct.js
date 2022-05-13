@@ -95,11 +95,11 @@ function AddProduct() {
             imageReview.src && URL.revokeObjectURL(imageReview.src);
         };
     }, [imageReview]);
-    const Transfers = async (id) =>{
+    const Transfers = async (id, currentWallet) =>{
         const amount = web3.utils.toWei(priceTotalETH.toString(), "ether");
         let   addressSupplier = productInput.wallet;
         await contract.methods.transferToSupplier(id,addressSupplier.toString()).send({
-            from:metaMark.wallet,
+            from:metaMark.wallet === '' ? currentWallet : metaMark.wallet,
             value:amount
         })
         .then((_transfer)=>{
@@ -151,7 +151,7 @@ function AddProduct() {
             provider.request({ method:'eth_requestAccounts'})
             .then((accounts)=>{
                 setConnectMetaMark({wallet: accounts[0], isConnected: true});
-                return storeProduct();
+                return storeProduct(accounts[0]);
             })
             .catch((err)=>{
                 console.log(err.response.data.message)
@@ -162,7 +162,7 @@ function AddProduct() {
         }
       
     };
-    const storeProduct = async ()=>{
+    const storeProduct = async (currentWallet = 0)=>{
         const formData = new FormData();
         for (const property in productInput) {
             formData.append(property, productInput[property]);
@@ -172,7 +172,7 @@ function AddProduct() {
         .then(res =>{
             if(res.success === true )
             {
-                Transfers(res.id);
+                Transfers(res.id, currentWallet);
             }
         }).catch((error)=>{
             if(error.response.data.error){

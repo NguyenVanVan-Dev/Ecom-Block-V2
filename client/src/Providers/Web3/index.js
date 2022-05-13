@@ -19,6 +19,16 @@ const  Web3Provider =  ({children}) => {
           const abiSMContract=  (await ManagerOgani).Artifact.abi //localhost ganache 
           const addressSMContract = (await ManagerOgani).deployedContract.address;  //localhost ganache 
           const web3 = new Web3(provider);
+          const providerInfura = new Web3.providers.WebsocketProvider('wss://ropsten.infura.io/ws/v3/ce71593d5f1e4f4c939d498531303136');
+          const web3Infura = new Web3(providerInfura);
+          const ManagerOganiInfura = new web3Infura.eth.Contract(ABI_V2,'0x4bE6Da0e943adc8397B923A3562a0bfDf850909A')
+          ManagerOganiInfura.events.transferSupplierSuccess({filter: {}, fromBlock: 'latest'}, (error, data) =>{
+              if(error) {
+                console.log(error);
+              } else {
+                console.log(data);
+              }
+          })
           if (provider) {
             // setWeb3Api({
             //   web3: web3,

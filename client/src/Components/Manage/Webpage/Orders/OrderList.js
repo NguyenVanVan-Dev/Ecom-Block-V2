@@ -31,7 +31,7 @@ function OrderList() {
         .then((res)=>{
             if(res.success === true){
                 Notiflix.Report.warning("Delete orders Successfully","orders has been remove from database" , 'Cancel');
-                $('#'+id).remove();
+                document.getElementById(`${id}`).remove();
             } 
             console.log(res);
         }).catch((error)=>{

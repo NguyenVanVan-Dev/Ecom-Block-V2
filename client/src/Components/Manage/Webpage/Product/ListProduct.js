@@ -5,26 +5,19 @@ import Notiflix from 'notiflix';
 import productApi from '../../../../Api/productApi';
 function ListProduct() {
     const [products,setProducts] = useState([]);
-    // const [categories,setCategorys] = useState({});
     useEffect(() => {
         const fetchProductlist = async () => {
-            try {
-                const params = {whoCall: 'admin' }
-                await productApi.getAll(params)
-                .then((res)=>{
-                    if(res.success === true){
-                        setProducts(res.products)
-                    }
-                    Notiflix.Loading.remove(500);
-                })
-                .catch((err)=>{
-                    console.log(err)
-                })
-               
-            } catch (error) {
-                console.log(error)
-            }
-            console.log('render')
+            await productApi.getAll()
+            .then((res)=>{
+                if(res.success === true){
+                    setProducts(res.products)
+                }
+                Notiflix.Loading.remove(500);
+            })
+            .catch((err)=>{
+                Notiflix.Report.warning("Get Product failure","Please come back late!" , 'Cancel');
+                Notiflix.Loading.remove(500);
+            })
         }
         fetchProductlist();
     }, []);
@@ -38,9 +31,8 @@ function ListProduct() {
         .then((res)=>{
             if(res.success === true){
                 Notiflix.Report.warning("Delete Product Successfully","Product has been remove from database" , 'Cancel');
-                $('#'+id).remove();
+                document.getElementById(`${id}`).remove();
             } 
-            console.log(res);
         }).catch((error)=>{
             Notiflix.Report.failure("Delete Product Failure",error.response.data.message, 'Cancel');
         })

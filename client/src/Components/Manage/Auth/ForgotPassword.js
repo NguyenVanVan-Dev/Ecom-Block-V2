@@ -3,6 +3,7 @@ import { Link, useNavigate} from "react-router-dom";
 import axios  from "axios";
 import Notiflix from 'notiflix';
 
+import authorizationApi from '../../../Api/authApi';
 const ForgotPassword = () =>{
     let navigate = useNavigate();
     useEffect(() => {
@@ -19,7 +20,7 @@ const ForgotPassword = () =>{
         let data = {
             email:resetPassInput.email,
         };
-        axios.put('/admin/forgot-password',data).then(res =>{
+        authorizationApi.forgotPass(data).then(res =>{
             if(res.data.success === true ){
                 Notiflix.Report.success('Get Link Successfully',`Password reset link has been sent to your Email: "${resetPassInput.email}"`, 'Cancel');
             }
