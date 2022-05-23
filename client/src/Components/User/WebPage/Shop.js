@@ -222,7 +222,7 @@ function Shop() {
                                                                 let price = product.price;
                                                                 return ( <Link key={product._id} to={`product/${product._id}`} className="latest-product__item">
                                                                             <div className="latest-product__item__pic">
-                                                                                <img src={`uploads/${product.image}`} alt="" />
+                                                                                <img src={process.env.REACT_APP_API_URL+`uploads/`+product.image} alt="" />
                                                                             </div>
                                                                             <div className="latest-product__item__text">
                                                                                 <h6>{product.name}</h6>
@@ -238,7 +238,7 @@ function Shop() {
                                                             let price = product.price;
                                                             return ( <Link key={product._id} to={`product/${product._id}`} className="latest-product__item">
                                                                         <div className="latest-product__item__pic">
-                                                                            <img src={`uploads/${product.image}`} alt="" />
+                                                                            <img src={process.env.REACT_APP_API_URL+`uploads/`+product.image} alt="" />
                                                                         </div>
                                                                         <div className="latest-product__item__text">
                                                                             <h6>{product.name}</h6>

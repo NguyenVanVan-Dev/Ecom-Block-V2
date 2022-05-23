@@ -23,7 +23,7 @@ const OrderPlaced = () => {
         const getAccounts = async () => {
             if(web3 && metaMark.wallet === '') {
                 const account = await web3.eth.getAccounts();
-                setConnectMetaMark(account[0]);
+                setConnectMetaMark({wallet: account[0], isConnected: true});
             }
         }
         web3 && getAccounts();
