@@ -6,8 +6,9 @@ import productApi from '../../../../Api/productApi';
 function ListProduct() {
     const [products,setProducts] = useState([]);
     useEffect(() => {
+        const params = {type: 'admin'}
         const fetchProductlist = async () => {
-            await productApi.getAll()
+            await productApi.getAll(params)
             .then((res)=>{
                 if(res.success === true){
                     setProducts(res.products)
@@ -58,7 +59,6 @@ function ListProduct() {
                                         <th scope="col">Name</th>
                                         <th scope="col">Slug</th>
                                         <th scope="col">Display</th>
-                                        <th scope="col">Description</th>
                                         <th scope="col">Image</th>
                                         <th scope="col">Price</th>
                                         <th scope="col">Quantity</th>
@@ -98,7 +98,6 @@ function ListProduct() {
                                                     <td>
                                                         { display}
                                                     </td>
-                                                    <td  style={{ maxWidth: 250 }} title={product.desc} >{product.desc}</td>
                                                     <td>
                                                         <img className="img-fluid" src={process.env.REACT_APP_API_URL+`uploads/`+product.image} alt="Product Image" width={'200px'} />
                                                     </td>

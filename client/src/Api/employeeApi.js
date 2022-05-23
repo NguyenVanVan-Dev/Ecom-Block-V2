@@ -7,7 +7,7 @@ const employeeApi = {
     return axiosClient.get(url,{ params });
   },
   store: (data) => {
-    const url = `/employee/register`;
+    const url = `api/employee/register`;
     return axiosClient.post(url,data);
   },
   update: (data) => {

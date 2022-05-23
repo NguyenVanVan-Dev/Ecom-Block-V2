@@ -2,11 +2,11 @@ import React,{useEffect,useState} from 'react';
 import { Link } from 'react-router-dom';
 import checkoutApi from '../../../Api/checkoutApi';
 import Notiflix from "notiflix";
-import { useWeb3 } from '../../../Providers';
+import { useWeb3, useMetaMark } from '../../../Providers';
 const OrderPlaced = () => {
     const { web3 } = useWeb3();
     const [listOrder, setListOrder] = useState([]);
-    const [account, setAccount] = useState('');
+    const { metaMark, setConnectMetaMark } =  useMetaMark();
     useEffect(() => {
         const setBg = document.querySelectorAll('.set-bg');
         setBg.forEach((item) => {
@@ -18,12 +18,12 @@ const OrderPlaced = () => {
         let hero__categories = document.querySelector(".hero__categories ul");
         hero__categories.style.display = 'none';
     });
-    console.log(account)
+    console.log(metaMark)
     useEffect(() => {
         const getAccounts = async () => {
-            if(web3) {
+            if(web3 && metaMark.wallet === '') {
                 const account = await web3.eth.getAccounts();
-                setAccount(account[0]);
+                setConnectMetaMark(account[0]);
             }
         }
         web3 && getAccounts();
@@ -40,7 +40,7 @@ const OrderPlaced = () => {
     const handleRemoveOrder = async (id) => {
         const params = {
             id,
-            wallet: account
+            wallet: metaMark.wallet
         }
         checkoutApi.deleteOrder(params)
         .then((data)=> {
@@ -51,7 +51,8 @@ const OrderPlaced = () => {
             }
         })
         .catch((err) => {
-            Notiflix.Report.failure("Ogani Notification","Delete Order Fail <br> The system encountered an error, please try again later.","Cancel");
+            console.log(err.response.data?.error);
+            Notiflix.Report.failure("Ogani Notification","Delete Order Fail <br> The system encountered an error, please try again later."+`${err.response.data?.error}`,"Cancel");
         })
     }
     return (

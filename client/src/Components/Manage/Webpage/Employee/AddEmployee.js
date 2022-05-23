@@ -52,17 +52,9 @@ const AddEmployee = ()=>{
     }
     const addManager = async () => {
         let   walletNewManager = employeeInput.wallet;
-        await contract.methods.addManager(walletNewManager.toString()).send({
+        return  await contract.methods.addManager(walletNewManager.toString()).send({
             from:account
-        })
-        .then((data)=>{
-            // storeEmployee();
-            Notiflix.Notify.warning('Save New Manager to SmartContract')
-        })
-        .catch((err)=>{
-            Notiflix.Loading.remove();
-            Notiflix.Report.failure("Meta Mark Notification",err.message, 'Cancel');
-        })
+        });
     }
     const storeEmployee = async () => {
         const data ={
@@ -73,20 +65,24 @@ const AddEmployee = ()=>{
         employeeApi.store(data).then(res =>{
             if(res.success === true)
             {
-                setEmployeeInput({
-                    name:'',
-                    email:'',
-                    wallet:'',
-                    error_list:[],
-                });
-                Notiflix.Loading.remove();
-                Notiflix.Notify.success("Employee has been added to the database");
+              return  addManager();
             }
-        }).catch((error)=>{
+        })
+        .then((data) => {
+            Notiflix.Loading.remove();
+            setEmployeeInput({
+                name:'',
+                email:'',
+                wallet:'',
+                error_list:[],
+            })
+            Notiflix.Notify.success("Employee is saved!");
+        })
+        .catch((error)=>{
             Notiflix.Loading.remove();
             if(error.response.data.listError){
                 setEmployeeInput((prev)=>{
-                    return {...prev,error_list: error.response.data.listError}
+                    return {...prev,error_list: error.response.data?.listError}
                 });
             }
             Notiflix.Notify.failure("Employee cannot be saved!");
@@ -98,7 +94,7 @@ const AddEmployee = ()=>{
             svgSize: '120px',
         });
         e.preventDefault();
-        addManager();
+        storeEmployee();
     };
     return (
         <div className="container">

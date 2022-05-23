@@ -5,7 +5,8 @@ import checkoutApi from '../../../Api/checkoutApi';
 import authorizationApi from '../../../Api/authApi';
 import {useWeb3, useMetaMark} from '../../../Providers';
 function CheckOut({cartItems,setCartItems}) {
-    const subTotal = cartItems.reduce((total,item)=>total+ item.price * item.quantity,0)
+    const subTotal = cartItems.reduce((total,item)=>total+ item.price * item.quantity,0);
+    const uselocalStorage =  localStorage.getItem('user') && JSON.parse(localStorage.getItem('user'));
     const {web3, contract, provider} = useWeb3();
     const [priceETH, setPriceETH] = useState(1);
     const [createAccount, setCreateAccount] = useState(false);
@@ -29,7 +30,7 @@ function CheckOut({cartItems,setCartItems}) {
         return user;
     });
     const { metaMark, setConnectMetaMark } =  useMetaMark();
-    console.log(metaMark);
+    console.log(uselocalStorage);
     useEffect(() => {
         const getPriceEth = async ()=>{
             fetch("https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=ETH,VND")
@@ -298,20 +299,24 @@ function CheckOut({cartItems,setCartItems}) {
                                 </div>
                                 </div>
                             </div>
-                            <div className="checkout__input__checkbox">
-                                <label htmlFor="acc">
-                                Create an account?
-                                <input type="checkbox" id="acc" checked={createAccount} onChange={()=> setCreateAccount(!createAccount)} />
-                                <span className="checkmark" />
-                                </label>
-                            </div>
-                            <p>Create an account by entering the information below. If you are a returning customer
-                                please login at the top of the page</p>
-                            <div className="checkout__input">
-                                <p>Account Password<span>*</span></p>
-                                <input type="password" name='password' value={checkout.password} onChange={handleInput}/>
-                                <span className="text-danger small">{checkout.error_list.password}</span>
-                            </div>
+                            {
+                                !uselocalStorage ? (<>
+                                <div className="checkout__input__checkbox">
+                                    <label htmlFor="acc">
+                                    Create an account?
+                                    <input type="checkbox" id="acc" checked={createAccount} onChange={()=> setCreateAccount(!createAccount)} />
+                                    <span className="checkmark" />
+                                    </label>
+                                </div>
+                                <p>Create an account by entering the information below. If you are a returning customer
+                                    please login at the top of the page</p>
+                                <div className="checkout__input">
+                                    <p>Account Password<span>*</span></p>
+                                    <input type="password" name='password' value={checkout.password} onChange={handleInput}/>
+                                    <span className="text-danger small">{checkout.error_list.password}</span>
+                                </div>
+                                </>) : ''
+                            }
                             <div className="checkout__input__checkbox">
                                 <label htmlFor="diff-acc">
                                 Ship to a different address?
