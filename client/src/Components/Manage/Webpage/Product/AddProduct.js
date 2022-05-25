@@ -16,6 +16,7 @@ function AddProduct() {
     const [productInput, setProductInput] = useState({
         name:'',
         desc:'',
+        review:'',
         slug:'',
         keyword:'',
         price:'',
@@ -104,7 +105,7 @@ function AddProduct() {
         })
         .then((_transfer)=>{
             Notiflix.Loading.remove();
-            setProductInput({name:'',desc:'',slug:'',keyword:'',price:'',qty:'',image:'',category_id:0,display:1,type_display:1,wallet:'',error_list:[],});
+            setProductInput({name:'',desc:'',review:'',slug:'',keyword:'',price:'',qty:'',image:'',category_id:0,display:1,type_display:1,wallet:'',error_list:[],});
         })
         .catch((err)=>{
             console.log(err);
@@ -272,9 +273,12 @@ function AddProduct() {
                                             placeholder="Product Description"/>
                                         <span className="text-danger small">{productInput.error_list.desc}</span>
                                     </div>
-                                
+                                    <div className="form-group">
+                                        <textarea type="text"  onChange={handleInput} value={productInput.review} name="review" rows={5}  className="form-control" 
+                                            placeholder="Product Review"/>
+                                        <span className="text-danger small">{productInput.error_list.review}</span>
+                                    </div>
                                     <div className="form-group row">
-                                       
                                         <div className="col-sm-3">
                                             <label htmlFor="SelectAnHien">Image</label>
                                             <button onClick={handelImage}  className="btn btn-primary btn-block">

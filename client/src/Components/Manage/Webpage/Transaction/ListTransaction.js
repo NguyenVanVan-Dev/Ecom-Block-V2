@@ -1,38 +1,17 @@
 import React,{useEffect, useState} from 'react'
 import {useWeb3} from "../../../../Providers";
 import Notiflix from 'notiflix';
+import axios from 'axios';
 function ListTransaction() {
     const [transactions, setTransactions] = useState();
     const {web3, contract, provider} = useWeb3();
-    const [account, setAccount] = useState(null);
-    const [isConnected, setIsConnected] = useState(false);
     useEffect(() => {
-        const LoadTransaction = async () =>{
-            await contract.methods.getAllTransaction().send({from:account})
-            .then((data)=>{
-                console.log(data);
-                Notiflix.Notify.failure("This feature is currently not available");
-            })
-            .catch((err)=>{
-                console.log(err);
-            })
-        }
-        contract && LoadTransaction();
-    }, [account]);
-    const  handelConnectMetamask = async () => {
-        provider.request({ method: 'eth_requestAccounts' })
-        .then((account)=>{
-           setAccount(account[0]);
-           setIsConnected(true);
+        axios.get('https://api-ropsten.etherscan.io/api?module=account&action=txlist&address=0x4bE6Da0e943adc8397B923A3562a0bfDf850909A&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=D5DD34SRRQ1H7SFD82DBZEXDDJR9GAIC1Y')
+        .then((res) => {
+            setTransactions(res.data.result);
         })
-        .catch((error) => {
-          if (error.code === 4001) {
-            console.log('Please connect to MetaMask.');
-          } else {
-            console.error(error);
-          }
-        });
-    }
+    }, []);
+
     return (
         <div className="mx-4">
             <div className="card o-hidden border-0 shadow-lg my-5">
@@ -44,36 +23,36 @@ function ListTransaction() {
                             <div className="text-center">
                                 <h1 className="h4 text-gray-900 mb-2">Transaction History</h1>
                             </div>
-                            <div className="mb-4 d-flex justify-content-between">
-                                    {/* <Link to={'/admin/list-product'} className="btn btn-primary ">List Product</Link> */}
-                                    <button onClick={()=> handelConnectMetamask()} className="btn btn-primary btn-user">
-                                        Connect Metamask
-                                    </button>
-                                </div>
+                            <div className="mb-4 d-flex justify-content-between">     
+                            </div>
                             <table className="table table-hover">
                                 <thead>
                                     <tr className='text-center'>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Id Product</th>
-                                        <th scope="col">Total Payment</th>
-                                        <th scope="col">Wallet Supplier</th>
-                                        <th scope="col">Wallet Admin</th>
-                                       
+                                        <th scope="col">TxHash</th>
+                                        <th scope="col">Method</th>
+                                        <th scope="col">Block</th>
+                                        <th scope="col">Date Time (UTC)</th>
+                                        <th scope="col">From</th>
+                                        <th scope="col">To</th>
+                                        <th scope="col">Value</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 {
                                     
                                     transactions && transactions.map((transaction,index)=>{
-                                        
+                                        const time = transaction.timeStamp
+                                        const d = new Date(time.toString());
                                         return (<tr key={index} id={transaction._id} className='text-center'>
-                                                    <th scope="row">{index+1}</th>
-                                                    <td>{transaction.idProduct}</td>
-                                                    <td>{ web3.utils.fromWei((transaction.totalPayment).toString(), "ether")} ETH</td>
+                                                    <td scope="row" className='text-truncate hash-tag'>{transaction.hash}</td>
+                                                    <td>{transaction.blockNumber}</td>
+                                                    <td>{transaction.blockNumber}</td>
                                                     <td>
-                                                        { transaction.supplier}
+                                                        { d.toString() }
                                                     </td>
-                                                    <td>{transaction.currentAdmin}</td>
+                                                    <td className='text-truncate hash-tag'>{transaction.from}</td>
+                                                    <td className='text-truncate hash-tag'>{transaction.to}</td>
+                                                    <td>{ web3.utils.fromWei((transaction.value).toString(), "ether")} ETH</td>
                                                     
                                                 </tr>)
                                     })

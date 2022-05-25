@@ -28,6 +28,11 @@ function DetailProduct({handleAddCart,setCartItems}) {
                 Notiflix.Report.failure("Product Detail",err.message, 'Cancel');
             })
         }
+       
+        getProduct();
+       
+    }, [id]);
+    useEffect(() => {
         const setBg = document.querySelectorAll('.set-bg');
         for (const item of setBg) {
             let bg = item.getAttribute('data-setbg');
@@ -37,15 +42,13 @@ function DetailProduct({handleAddCart,setCartItems}) {
         hero__item.style.display = 'none';
         let hero__categories = document.querySelector(".hero__categories ul");
         hero__categories.style.display = 'none';
-        getProduct();
-       
-    }, [id]);
+    }, []);
     const handleQty = (e)=>{
         setQty(e.target.value);
     };
     return (
         <div>
-            <section className="breadcrumb-section set-bg" data-setbg="/UI/img/breadcrumb.jpg">
+            <section className="breadcrumb-section set-bg" data-setbg="/Resource/User/image/breadcrumb.jpg">
                 <div className="container">
                 <div className="row">
                     <div className="col-lg-12 text-center">
@@ -102,9 +105,7 @@ function DetailProduct({handleAddCart,setCartItems}) {
                         <span>(18 reviews)</span>
                         </div>
                         <div className="product__details__price">{(detailProduct.price).toLocaleString('vi-VN', {style: 'currency',currency: 'VND'}) }</div>
-                        <p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam
-                        vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Vestibulum ac diam sit amet
-                        quam vehicula elementum sed sit amet dui. Proin eget tortor risus.</p>
+                        <p>{detailProduct.review}</p>
                         <div className="product__details__quantity">
                         <div className="quantity">
                             <div className="pro-qty">
@@ -115,7 +116,7 @@ function DetailProduct({handleAddCart,setCartItems}) {
                         <Link to={""} className="primary-btn" onClick={(e)=>{ handleAddCart(detailProduct,qty)}}>ADD TO CARD</Link>
                         <a href="#" className="heart-icon"><span className="icon_heart_alt" /></a>
                         <ul>
-                        <li><b>Availability</b> <span>In Stock</span></li>
+                        <li><b>Availability</b> <span>There are {detailProduct.qty} products in stock</span></li>
                         <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
                         <li><b>Weight</b> <span>0.5 kg</span></li>
                         <li><b>Share on</b>

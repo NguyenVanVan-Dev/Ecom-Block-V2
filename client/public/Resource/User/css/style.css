@@ -3004,7 +3004,11 @@ input::-webkit-inner-spin-button {
 	font-size: 18px;
 	letter-spacing: 2px;
 }
-
+.hash-tag{
+	max-width: 249px;
+    /* display: inline-block; */
+    vertical-align: bottom;
+}
 /*--------------------------------- Responsive Media Quaries -----------------------------*/
 
 @media only screen and (min-width: 1200px) {

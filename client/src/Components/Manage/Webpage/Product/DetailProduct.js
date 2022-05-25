@@ -11,6 +11,7 @@ function DetailProduct() {
     const [productInput, setProductInput] = useState({
         name:'',
         desc:'',
+        review:'',
         slug:'',
         keyword:'',
         price:'',
@@ -49,6 +50,7 @@ function DetailProduct() {
                             ...productInput,
                             name:res.product.name,
                             desc:res.product.desc,
+                            review:res.product.review,
                             slug:res.product.slug,
                             keyword:res.product.keyword,
                             display:res.product.display,
@@ -185,7 +187,11 @@ function DetailProduct() {
                                             placeholder="Product Description"/>
                                         <span className="text-danger small">{productInput.error_list.desc}</span>
                                     </div>
-                                
+                                    <div className="form-group">
+                                        <textarea type="text"  onChange={handleInput} value={productInput.review} name="review" rows={5}  className="form-control" 
+                                            placeholder="Product Review"/>
+                                        <span className="text-danger small">{productInput.error_list.review}</span>
+                                    </div>
                                     <div className="form-group row">
                                        
                                         <div className="col-sm-3">
