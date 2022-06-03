@@ -6,7 +6,7 @@ function ListTransaction() {
     const [transactions, setTransactions] = useState();
     const {web3, contract, provider} = useWeb3();
     useEffect(() => {
-        axios.get('https://api-ropsten.etherscan.io/api?module=account&action=txlist&address=0x4bE6Da0e943adc8397B923A3562a0bfDf850909A&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=D5DD34SRRQ1H7SFD82DBZEXDDJR9GAIC1Y')
+        axios.get('https://api-ropsten.etherscan.io/api?module=account&action=txlist&address=0x4bE6Da0e943adc8397B923A3562a0bfDf850909A&startblock=0&endblock=99999999&page=1&offset=1000&sort=desc&apikey=D5DD34SRRQ1H7SFD82DBZEXDDJR9GAIC1Y')
         .then((res) => {
             setTransactions(res.data.result);
         })
@@ -41,17 +41,20 @@ function ListTransaction() {
                                 {
                                     
                                     transactions && transactions.map((transaction,index)=>{
-                                        const time = transaction.timeStamp
-                                        const d = new Date(time.toString());
+                                        const d = new Date(parseInt(transaction.timeStamp));
                                         return (<tr key={index} id={transaction._id} className='text-center'>
-                                                    <td scope="row" className='text-truncate hash-tag'>{transaction.hash}</td>
-                                                    <td>{transaction.blockNumber}</td>
+                                                    <td scope="row" className='text-truncate hash-tag'>
+                                                        <a href={`https://ropsten.etherscan.io/tx/${transaction.hash}`} target='_blank'>{transaction.hash}</a>
+                                                    </td>
+                                                    <td>{(transaction.input).slice(0, 10)}</td>
                                                     <td>{transaction.blockNumber}</td>
                                                     <td>
-                                                        { d.toString() }
+                                                        {d.toLocaleString()}
                                                     </td>
-                                                    <td className='text-truncate hash-tag'>{transaction.from}</td>
-                                                    <td className='text-truncate hash-tag'>{transaction.to}</td>
+                                                    <td className='text-truncate hash-tag'>
+                                                       <a href={`https://ropsten.etherscan.io/address/${transaction.from}` } target='_blank'>{transaction.from}</a> 
+                                                    </td>
+                                                    <td className='text-truncate hash-tag'><a href={`https://ropsten.etherscan.io/address/${transaction.to}`} target='_blank'>{transaction.to}</a></td>
                                                     <td>{ web3.utils.fromWei((transaction.value).toString(), "ether")} ETH</td>
                                                     
                                                 </tr>)
