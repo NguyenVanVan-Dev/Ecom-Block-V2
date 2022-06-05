@@ -84,6 +84,7 @@ const OrderPlaced = () => {
                                         <th>Address</th>
                                         <th>Receiver</th>
                                         <th>Phone</th>
+                                        <th>Method</th>
                                         <th>Total</th>
                                         <th />
                                         </tr>
@@ -97,27 +98,34 @@ const OrderPlaced = () => {
 
                                     }
                                     {
-                                        listOrder.map((item,index)=>(
-                                            <tr key={item._id} id={item._id}>
-                                                    <td>{index + 1}</td>
-                                                    <td >
-                                                        {item.apartmentAddress +", "+ item.country}       
-                                                    </td>
-                                                    <td >
-                                                        {item.name}
-                                                    </td>
-                                                    <td >
-                                                    {item.phone}
-                                                    </td>
-                                                    <td >
-                                                    {(item.totalVND).toLocaleString('vi-VN', {style: 'currency',currency: 'VND'}) + "/"+ item.totalETH +" ETH"}
-                                                    </td>
-                                                    <td className="shoping__cart__item__close pr-4">
-                                                        <span className='mr-4 delete' onClick={() => handleRemoveOrder(item._id)} ><i className="fas fa-trash-alt"></i></span>
-                                                        <Link to={`/order-detail/${item._id}`}>  <span className='info'><i className="fas fa-info-circle"></i></span></Link>
-                                                    </td>
-                                            </tr>
-                                        ))
+                                        listOrder.map((item,index)=> {
+                                            let display = '';
+                                            item.method === 1 ? display = 'Payment on delivery' : display = 'Payment with tokens(ETH)';
+                                            return (
+                                                <tr key={item._id} id={item._id}>
+                                                        <td>{index + 1}</td>
+                                                        <td >
+                                                            {item.apartmentAddress +", "+ item.country}       
+                                                        </td>
+                                                        <td >
+                                                            {item.name}
+                                                        </td>
+                                                        <td >
+                                                        {item.phone}
+                                                        </td>
+                                                        <td >
+                                                            {display}
+                                                        </td>
+                                                        <td >
+                                                        {(item.totalVND).toLocaleString('vi-VN', {style: 'currency',currency: 'VND'}) + "/"+ item.totalETH +" ETH"}
+                                                        </td>
+                                                        <td className="shoping__cart__item__close pr-4">
+                                                            <span className='mr-4 delete' onClick={() => handleRemoveOrder(item._id)} ><i className="fas fa-trash-alt"></i></span>
+                                                            <Link to={`/order-detail/${item._id}`}>  <span className='info'><i className="fas fa-info-circle"></i></span></Link>
+                                                        </td>
+                                                </tr>
+                                            )
+                                        })
                                     }
                             
                                 </tbody>

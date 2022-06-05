@@ -4,7 +4,7 @@ import Notiflix from 'notiflix';
 import { Link } from 'react-router-dom';
 import productApi from '../../../Api/productApi';
 import Pagination from "./Pagination";
-function Shop() {
+function Shop( {handleAddCart}) {
     const [discountProduct, setDiscountProduct] = useState();
     const [latestProducts,setLatestProducts] = useState();
     const [allProduct, setAllProduct] = useState();
@@ -220,7 +220,7 @@ function Shop() {
                                                         {
                                                             latestProducts.listOne.map((product)=>{
                                                                 let price = product.price;
-                                                                return ( <Link key={product._id} to={`product/${product._id}`} className="latest-product__item">
+                                                                return ( <Link key={product._id} to={`/product/${product._id}`} className="latest-product__item">
                                                                             <div className="latest-product__item__pic">
                                                                                 <img src={process.env.REACT_APP_API_URL+`uploads/`+product.image} alt="" />
                                                                             </div>
@@ -236,7 +236,7 @@ function Shop() {
                                                     {
                                                         latestProducts.listTwo.map((product)=>{
                                                             let price = product.price;
-                                                            return ( <Link key={product._id} to={`product/${product._id}`} className="latest-product__item">
+                                                            return ( <Link key={product._id} to={`/product/${product._id}`} className="latest-product__item">
                                                                         <div className="latest-product__item__pic">
                                                                             <img src={process.env.REACT_APP_API_URL+`uploads/`+product.image} alt="" />
                                                                         </div>
@@ -280,14 +280,17 @@ function Shop() {
                                                             <ul className="product__item__pic__hover">
                                                                 <li><a href="#"><i className="fa fa-heart" /></a></li>
                                                                 <li><a href="#"><i className="fa fa-retweet" /></a></li>
-                                                                <li><a href="#"><i className="fa fa-shopping-cart" /></a></li>
+                                                                <li onClick={()=>{
+                                                                    handleAddCart(product)
+                                                                }}><Link to={""}><i className="fa fa-shopping-cart" /></Link></li>
                                                             </ul>
                                                             </div>
-                                                            <div className="product__discount__item__text">
-                                                            <span>Dried Fruit</span>
-                                                            <h5><a href="#">{product.name}</a></h5>
-                                                            <div className="product__item__price">{priceDropped.toLocaleString('vi-VN', {style: 'currency',currency: 'VND'})} <span>{(product.price).toLocaleString('vi-VN', {style: 'currency',currency: 'VND'})}</span></div>
-                                                            </div>
+                                                            <Link to={`/product/${product._id}`}>
+                                                                <div className="featured__item__text">
+                                                                    <h6>{product.name}</h6>
+                                                                    <h5>{priceDropped.toLocaleString('vi-VN', {style: 'currency',currency: 'VND'})}</h5>
+                                                                </div>
+                                                            </Link>
                                                         </div>
                                                     </div> )
                                                 })}
@@ -329,13 +332,17 @@ function Shop() {
                                                     <ul className="product__item__pic__hover">
                                                         <li><a href="#"><i className="fa fa-heart" /></a></li>
                                                         <li><a href="#"><i className="fa fa-retweet" /></a></li>
-                                                        <li><a href="#"><i className="fa fa-shopping-cart" /></a></li>
+                                                        <li onClick={()=>{
+                                                             handleAddCart(product)
+                                                        }}><Link to={""}><i className="fa fa-shopping-cart" /></Link></li>
                                                     </ul>
                                                     </div>
-                                                    <div className="product__item__text">
-                                                    <h6><a href="#">{product.name}</a></h6>
-                                                    <h5>{(product.price).toLocaleString('vi-VN', {style: 'currency',currency: 'VND'})}</h5>
-                                                    </div>
+                                                    <Link to={`/product/${product._id}`}>
+                                                        <div className="featured__item__text">
+                                                            <h6>{product.name}</h6>
+                                                            <h5>{product.price.toLocaleString('vi-VN', {style: 'currency',currency: 'VND'})}</h5>
+                                                        </div>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         )

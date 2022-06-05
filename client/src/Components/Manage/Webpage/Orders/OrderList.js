@@ -52,9 +52,9 @@ function OrderList() {
                             <div className="">
                                 <Link to={'/admin/add-orders'} className="btn btn-success mb-4">Add orders</Link>
                             </div>
-                            <table className="table table-hover">
+                            <table className="table table-hover table-striped table-bordered">
                                 <thead>
-                                    <tr>
+                                    <tr style={{textAlign: 'center', whiteSpace: "nowrap"}}>
                                         <th scope="col">#</th>
                                         <th scope="col">Address recever</th>
                                         <th scope="col">Phone</th>
@@ -66,7 +66,7 @@ function OrderList() {
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style={{textAlign: 'center'}}>
                                 {
                                     orders.map((order,index)=>{
 
@@ -86,7 +86,7 @@ function OrderList() {
                                                     <td>{order.totalVND}</td>
                                                     
                                                     <td>{order.totalETH}</td>
-                                                    <td>
+                                                    <td style={{ whiteSpace: "nowrap"}}>
                                                         <Link to={'/admin/order-detail/'+order._id} className="btn btn-info mr-1 mb-1"><i className="fas fa-edit"></i></Link>
                                                         <button onClick={()=>{handleRemoveOrder(order._id)}} data-id={order._id} className="btn btn-danger remove_cate"><i className="fas fa-trash pr-1"></i></button>
                                                     </td>

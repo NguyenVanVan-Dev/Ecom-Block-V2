@@ -80,6 +80,7 @@ const FeaturedProduct = ({handleAddCart}) => {
                             <div key={product._id} className={`col-lg-3 col-md-4 col-sm-6 mix  ${product.category_id.slug}`} >                               
                                     <div className="featured__item">
                                         <div className="featured__item__pic set-bg" data-setbg={`https://ecom-block.herokuapp.com/uploads/${product.image}`}>
+                                            {/* <div className="product__discount__percent">-{product.sale_of}%</div> */}
                                             <ul className="featured__item__pic__hover">
                                                 <li><a href="#"><i className="fa fa-heart" /></a></li>
                                                 <li><a href="#"><i className="fa fa-retweet" /></a></li>
@@ -91,10 +92,10 @@ const FeaturedProduct = ({handleAddCart}) => {
                                             </ul>
                                         </div>
                                         <Link to={`product/${product._id}`}>
-                                        <div className="featured__item__text">
-                                            <h6>{product.name}</h6>
-                                            <h5>{price.toLocaleString('vi-VN', {style: 'currency',currency: 'VND'})}</h5>
-                                        </div>
+                                            <div className="featured__item__text">
+                                                <h6>{product.name}</h6>
+                                                <h5>{price.toLocaleString('vi-VN', {style: 'currency',currency: 'VND'})}</h5>
+                                            </div>
                                         </Link>
                                     </div>
                             </div>

@@ -30,7 +30,7 @@ function CheckOut({cartItems,setCartItems}) {
         return user;
     });
     const { metaMark, setConnectMetaMark } =  useMetaMark();
-    console.log(uselocalStorage);
+    console.log(metaMark.wallet);
     useEffect(() => {
         const getPriceEth = async ()=>{
             fetch("https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=ETH,VND")
@@ -130,7 +130,7 @@ function CheckOut({cartItems,setCartItems}) {
             totalETH:priceTotalETH,
             method:paymentMethod.method,
         }
-        console.log(params)
+        console.log(paymentMethod.method)
         if(!cart){
             Notiflix.Report.failure(`Can't payment`,'Your shopping cart is empty','Canel');
         }else{
@@ -167,7 +167,7 @@ function CheckOut({cartItems,setCartItems}) {
                     Notiflix.Loading.remove();
                     break;
                 case 2:
-                    if(metaMark.wallet === '') {
+                    if(!metaMark.wallet) {
                         handelConnectMetamask();
                     } else {
                         handleStoreOrder(params)

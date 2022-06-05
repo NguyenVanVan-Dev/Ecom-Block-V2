@@ -1,12 +1,12 @@
 import React ,{ useState,useEffect} from "react";
 import {Link,useParams} from "react-router-dom";
 import Notiflix from 'notiflix';
-import $ from 'jquery';
 import orderApi from "../../../../Api/orderApi";
 
 function OrderDetail() {
     const { id } = useParams();
     const [order,setOrder] = useState(null);
+    const [selectInput,setSelectInput] = useState(null);
     useEffect(() => {
         const fetchOrderDetail = async () => {
             const params = {id}
@@ -21,13 +21,29 @@ function OrderDetail() {
         }
         fetchOrderDetail();
     }, []);
-    console.log(order);
-    const handelSubmit = async (e)=>{
+    const handleSelect = (e) => {
+        setSelectInput( e.target.value);
+    }
+    const handleUpdateOrder = async (e)=>{
         e.preventDefault();
         Notiflix.Loading.hourglass("Loading data! Please wait...",{
             clickToClose: true,
             svgSize: '120px',
         });
+        const params = {
+            id,
+            status:selectInput
+        }
+        orderApi.update(params)
+        .then((res) => {
+            Notiflix.Notify.success("Order updated")
+            Notiflix.Loading.remove(500);
+        })
+        .catch((error)=> {
+            console.log(error);
+            Notiflix.Notify.failure("Update wrong order")
+            Notiflix.Loading.remove(500);
+        })
 
     };
     return (
@@ -110,7 +126,7 @@ function OrderDetail() {
                             
                             <table className="table table-bordered" id="dataTable" width="100%" cellSpacing={0}>
                             <thead>
-                                <tr style={{textAlign: 'center'}}>
+                                <tr style={{textAlign: 'center'}} className="">
                                 <th>STT</th>
                                 <th>Tên Sản Phẩm</th>
                                 <th>Số Lượng</th>
@@ -122,28 +138,26 @@ function OrderDetail() {
                             <tbody>
                                 {
                                     orderDetail.listItemOrder.map((item, index) => {
-                                        return (<>
-                                            <tr className="text-center">
-                                                <td><i>{index + 1}</i></td>
-                                                <td>{item.productID.name}</td>
-                                                <td>{item.qty}</td>
-                                                <td>{item.productID.price}đ</td>
-                                                <td> <img src={process.env.REACT_APP_API_URL+'uploads/'+item.productID.image} id='review-image' className=" img-thumbnail w-25" alt="..."/></td>
-                                                <td>  
-                                                    <span className="mr-5 font-weight-bold"> Thanh toán:</span> {item.qty * item.price }  VNĐ
-                                                </td>
-                                            </tr>
-                                        </>)
+                                        return ( <tr key={item._id} className="text-center">
+                                        <td><i>{index + 1}</i></td>
+                                        <td>{item.productID.name}</td>
+                                        <td>{item.qty}</td>
+                                        <td>{item.productID.price}đ</td>
+                                        <td> <img src={process.env.REACT_APP_API_URL+'uploads/'+item.productID.image} id='review-image' className=" img-thumbnail w-25" alt="..."/></td>
+                                        <td>  
+                                            <span className="mr-5 font-weight-bold"> Thanh toán:</span> {item.qty * item.price }  VNĐ
+                                        </td>
+                                    </tr>)
                                     })
                                 }
                                 <tr>
-                                    <td colspan="6" class="p-2">  
-                                        <span class="mr-5 font-weight-bold"> Thanh toán:</span> {orderDetail.totalVND} VNĐ                                       
+                                    <td colSpan="6" class="p-2">  
+                                        <span className="mr-5 font-weight-bold"> Thanh toán:</span> {orderDetail.totalVND} VNĐ                                       
                                     </td> 
                                 </tr>
                                 <tr>
-                                    <td colspan="6" class="p-2">  
-                                        <span class="mr-5 font-weight-bold"> Thanh toán:</span> {orderDetail.totalETH} ETH                                     
+                                    <td colSpan="6" class="p-2">  
+                                        <span className="mr-5 font-weight-bold"> Thanh toán:</span> {orderDetail.totalETH} ETH                                     
                                     </td>
                                 </tr>
                             </tbody>
@@ -154,20 +168,20 @@ function OrderDetail() {
                     <div className="card shadow mb-4 p-3">
                         <form role="form">
                         <div className="form-group col-sm-6">
-                        <select name="select_status" class="form-control">
-                            <option value="">----Chọn hình thức đơn hàng-----</option>
+                        <select name="select_status" disabled={orderDetail.status === 2 || orderDetail.status === 3 ? true : false} defaultValue={orderDetail.status} onChange={handleSelect} class="form-control">
+                            <option  value="0">----Chọn hình thức đơn hàng-----</option>
                             <option  value="1" selected={orderDetail.status ===1 ? true : false} >Chưa Xử Lý</option>
                             <option  value="2" selected={orderDetail.status ===2 ? true : false} >Đã Xử Lý-Đã Giao Hàng</option>
                             <option  value="3" selected={orderDetail.status ===3 ? true : false} >Hủy Đơn Hàng</option>
                         </select>
                         </div>
                         <div className="form-group col-sm-6">
-                            <button type="submit" name="update_order" className="btn btn-info form-control">cập nhật đơn hàng
+                            <button  name="update_order" onClick={handleUpdateOrder}  className="btn btn-info form-control">cập nhật đơn hàng
                             </button>
                         </div>
                         </form>
                         <div className="col-md-6">
-                        <a target="_blank" href="{{url('/print-order/'.$details->order_id)}}" className="btn btn-warning">in đơn hàng</a>
+                        <a target="_blank" href="/" className="btn btn-warning">in đơn hàng</a>
                         </div>
                     </div>
                     <hr />

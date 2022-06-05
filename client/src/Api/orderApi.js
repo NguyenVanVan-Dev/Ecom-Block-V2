@@ -10,6 +10,10 @@ const orderApi = {
     const url = `/order/detail`;
     return axiosClient.get(url,{ params });
   },
+  update: (params) => {
+    const url = `/order/update`;
+    return axiosClient.put(url,params);
+  },
 }
 
 export default orderApi;
