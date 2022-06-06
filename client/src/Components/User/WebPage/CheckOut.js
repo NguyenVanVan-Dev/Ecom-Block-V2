@@ -11,6 +11,7 @@ function CheckOut({cartItems,setCartItems}) {
     const [priceETH, setPriceETH] = useState(1);
     const [createAccount, setCreateAccount] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState({method: 1});
+    const { metaMark, setConnectMetaMark } =  useMetaMark();
     const [checkout, setCheckout] = useState((prev) => {
         const examUser = {
             name: "Nguyễn Văn Vấn",
@@ -29,8 +30,7 @@ function CheckOut({cartItems,setCartItems}) {
         user = {...user, error_list:{}};
         return user;
     });
-    const { metaMark, setConnectMetaMark } =  useMetaMark();
-    console.log(metaMark.wallet);
+    console.log(metaMark.wallet)
     useEffect(() => {
         const getPriceEth = async ()=>{
             fetch("https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=ETH,VND")
@@ -50,6 +50,25 @@ function CheckOut({cartItems,setCartItems}) {
         hero__categories.style.display = 'none';
         getPriceEth();
     }, []);
+    useEffect(() => {
+        const handleAccountsChanged = async () => {
+            const accounts = await web3.eth.getAccounts();
+            if(accounts.length === 0)
+            {
+                console.log("No Wallet");
+            }else if(accounts[0] !== metaMark.wallet) {
+                setConnectMetaMark({wallet: accounts[0], isConnected: true});
+            }
+        }
+        if(metaMark.isConnected) {
+            provider.on("accountsChanged",handleAccountsChanged);
+        }
+        return () => {
+            if(metaMark.isConnected) {
+                provider.removeListener('accountsChanged', handleAccountsChanged);
+            }
+        }
+    }, [metaMark.isConnected]);
     const priceTotalETH =(subTotal / parseFloat(priceETH)).toFixed(10);
     const handleInput = (e)=> {
         setCheckout({...checkout,[e.target.name]: e.target.value});
@@ -84,15 +103,6 @@ function CheckOut({cartItems,setCartItems}) {
                 console.log(err);
             })
         return false;
-    }
-    const handleAccountsChanged = async () => {
-        const accounts = await web3.eth.getAccounts();
-        if(accounts.length === 0)
-        {
-            console.log("No Wallet");
-        }else if(accounts[0] !== metaMark.wallet) {
-            setConnectMetaMark({wallet: accounts[0], isConnected: true});
-        }
     }
     const  handelConnectMetamask = async () => {
         provider.request({ method: 'eth_requestAccounts' })
@@ -129,6 +139,7 @@ function CheckOut({cartItems,setCartItems}) {
             totalVND:subTotal,
             totalETH:priceTotalETH,
             method:paymentMethod.method,
+            paidWallet:metaMark.wallet
         }
         console.log(paymentMethod.method)
         if(!cart){

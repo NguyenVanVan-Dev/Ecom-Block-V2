@@ -14,7 +14,8 @@ const ListContract = () => {
             }
         })
         .catch((error)=>{
-            Notiflix.Report.failure("Contract not Found","please come back later" , 'Cancel');
+            console.log(error.response.data.message);
+            Notiflix.Report.failure("Contract not Found",error.response.data.message, 'Cancel');
         })
     },[])
     const handleRemoveContract = (id)=>{
