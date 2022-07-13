@@ -3,7 +3,7 @@ import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { loadContract } from "../../Utilities/load-contracts";
 import ABI from  "../ABIold.json";
-import ABI_V2 from  "../ABI_V2.json"; // address Ropsten Ethscan 0x237Fc62f28a9b28Fc9c33baC7fC6c9424E143f9C
+import ABI_V2 from  "../ABI_V2.json"; // address Ropsten Ethscan 0x4bE6Da0e943adc8397B923A3562a0bfDf850909A
 const Web3Context = createContext();
 const  Web3Provider =  ({children}) => {
     

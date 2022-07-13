@@ -104,7 +104,7 @@ function ListProduct() {
                                                     <td>{product.price}</td>
                                                     <td>{product.qty}</td>
                                                     
-                                                    <td>{product.category_id.name}</td>
+                                                    <td>{product.category_id?.name}</td>
                                                     <td>{ type_display}</td>
                                                     <td>
                                                         <Link to={'/admin/product/'+product._id} className="btn btn-info mr-1 mb-1"><i className="fas fa-edit"></i></Link>
